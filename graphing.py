@@ -11,6 +11,12 @@ Date: 01/03/2019
 Program Description: Graph the set
 over the specific time stamp 
 """
+import matplotlib.pyplot as plt
 
-def Graph(score1, score2):
+def Graph(xdata, ydata, xname, yname, title):
+	plt.plot(xdata, ydata, color='blue')
+	plt.ylabel(xname)
+	plt.xlabel(yname)
+	plt.title(title)
+	plt.show()
 	return None;
