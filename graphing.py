@@ -9,7 +9,7 @@ Author: Zachary Nowak and Ethan Saari
 Date: 01/03/2019
 
 Program Description: Graph the set
-over the specific time stamp
+over the specific time stamp 
 """
 
 def Graph(score1, score2):
