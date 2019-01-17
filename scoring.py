@@ -12,6 +12,10 @@ Program Description: This uses the
 dataset to calculate a score.
 """
 import random
-def Score(dataset1, dataset2):
+def Score(file, start, end):
 	#make flexible enough so we can use weights
+	"""
+	iterate through the file checking the date 
+	column and return the score.
+	"""
 	return random.randint(0,100), random.randint(0,100)
