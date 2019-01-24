@@ -11,7 +11,9 @@ Date: 01/03/2019
 Program Description: This uses the
 dataset to calculate a score.
 """
-import random
-def Score(dataset1, dataset2):
-	#make flexible enough so we can use weights
-	return random.randint(0,100), random.randint(0,100)
+import sentiment
+
+#def Score(dataset1):		
+file = open('C:/Users/nogos/Documents/GitHub/Predicting-Elections/Test.txt', 'r+')
+sentiment.Sentiment(file)
+	#return 
