@@ -1,0 +1,9 @@
+Important Text
+#driver.get("https://www.realclearpolitics.com/epolls/2018/house/va/virginia_10th_district_comstock_vs_wexton-6348.html")
+#driver.get("https://www.realclearpolitics.com/epolls/other/trump_favorableunfavorable-5493.html")
+#Obtain the table
+#https://chrome.google.com/webstore/detail/xpath-helper/hgimnogjllphhhkhlmebbmlgjoejdpjl#using xpath as an app just hold shift to get element
+
+	#Scoring Sentiment
+	#Adds a sentiment score to each line of tweets
+	sentiment.Sentiment(collection_of_tweets)

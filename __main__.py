@@ -12,7 +12,7 @@ Program Description: This code can
 determine elections based off of 
 the two canidates social media trends
 """
-VERSION = '1.1'
+VERSION = '1.2'
 __author__ = 'Zachary Nowak, Ethan Saari'
 
 """STANDARD LIBRARY IMPORTS"""
@@ -20,6 +20,7 @@ import json
 import platform
 import os
 import datetime
+from datetime import timedelta
 
 """LOCAL LIBRARY IMPORTS"""
 import collecting
@@ -31,20 +32,24 @@ import graphing
 
 """MAIN"""
 def main():
-	
-	start = datetime.datetime(2010, 1, 1)  # year, month, day
-	end = datetime.datetime(2016, 12, 7)  # year, month, day
-	
+												#INTRO#
+	#------------------------------------------------------------------------------------------------#
+	if(platform.system() == "Darwin"):#MAC
+		election_search = raw_input("What election: ")#The two last names of the canidates i.e. Wexton Comstock
+   
+	if(platform.system() == "Windows"):#WINDOWS
+		election_search = input("What election: ")#The two last names of the canidates i.e. Wexton Comstock
+		
 	"""
 	collection_of_tweets follows this file format
 	canidate, date, tweet, likes, replies, sentitment
 	"""
-	collection_of_tweets = open("tweets.txt","w+")# open a file for writing and create it if it doesn't exist
+	collection_of_tweets = {}
 	"""
 	collection_of_polls follows this file format
 	date, canidate, score
 	"""
-	collection_of_polls = open("polls.txt","w+")
+	collection_of_polls = {}
 	"""
 	x = date
 	y = score
@@ -52,35 +57,52 @@ def main():
 	coordinates_of_tweets = {}#comprised of [x,y] scores
 	coordinates_of_polls = {}#comprised of [x,y] scores
 	
+	"""twitter handles for canidates"""
 	#Collecting Canidates Name
-	list_of_canidates = []
-	
-	#Collecting Handles
+	list_of_canidates = election_search.split(" ")
+	canidates_handle = {}
 	for canidate in list_of_canidates:
-		canidates_handle = collecting.Handle(canidate)
-		collection_of_tweets.write(collecting.Collect(canidates_handle))
+		canidates_handle[canidate] = collecting.Handle(canidate)
 		
-	#Collecting Poll Data
-	collection_of_polls.append(collecting.CollectPoll("election_name")#date, canidate, score
+											#Collecting Poll Data#
+	#------------------------------------------------------------------------------------------------#
+	if(os.path.isfile("poll.txt")):
+		with open("poll.txt", 'r') as fp:
+			collection_of_polls = json.load(fp)
+	else:
+		collection_of_polls = collecting.CollectPoll(election_search)#collection_of_polls[date] = score name
 	
-	#Coordinates of Poll
-	for line in coordinates_of_polls:
-		line = line.delimited(",")
-		coordinates_of_polls[line[0],line[1] + " " + line[2]]#date, canidate+score
+	"""Iterate through the dates in the dict of polls and find the corresponding tweets from that week."""
+	if(os.path.isfile("tweets")):
+		with open("tweets",'r') as fp:
+			collection_of_tweets = json.load(fp)
+
+	else:		
+		for date in collection_of_polls:
+			date_list = date.split("/")
+			month = int(date_list[0])
+			day = int(date_list[1])
+			end = datetime.datetime(2018, month, day)# year, month, day
+			start = end - timedelta(days=7)# a week back from the end
+			
+			
+											#Collecting Tweets#
+	#-------------------------------------------------------------------------------------------------#
+			i = 65 #ASCII for the letter A
+			for canidate in list_of_canidates:
+				collection_of_tweets[(str(end)+chr(i))] = collecting.Collect(canidates_handle[canidate], start, end)
+				i += 1
+		with open("tweets", 'w') as outfile:
+			json.dump(collection_of_tweets, outfile)
+
+											#Scoring Everything#
+	#-----------------------------------------------------------------------------------------------#
+	for date in collection_of_tweets.keys():
+		for j in range(len(list_of_canidates)):
+			coordinates_of_tweets[date+chr(j+65)] = scoring.Scoring(collection_of_tweets, date)
 	
-	#Scoring Sentiment
-	#Adds a sentiment score to each line of tweets
-	sentiment.Sentiment(collection_of_tweets)
-	
-	#Scoring Everything
-	for date in coordinates_of_polls.keys():
-		end = date
-		start = date - datetime.timedelta(7)
-		coordinates_of_tweets[date] = score.Scoring(collection_of_tweets, start, end)
-	
-	
-	collection_of_polls.close()
-	collection_of_tweets.close()
+	"""FIXME"""
+	#Coordinates of polls needs to be tuned#
 	
 	graphing.Graph(coordinates_of_polls, coordinates_of_tweets)
 	
