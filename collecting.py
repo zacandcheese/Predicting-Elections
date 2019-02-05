@@ -89,7 +89,7 @@ def Collect(user, start, end):
 					
 					print("USUALY A DATE: " + date)
 					print("TWEET: " + tweet_body)
-					print("LiKES: "+ likes.replace("Like\n",""))
+					print("LIKES: "+ likes.replace("Like\n",""))
 					print("RETWEETS: "+ retweets.replace("Retweet\n",""))
 					
 					date_list.extend((date,tweet_body,likes.replace("Like\n",""),retweets.replace("Retweet\n","")))
@@ -165,3 +165,7 @@ def Handle(name):
 		return("JenniferWexton")
 	elif(name == "Comstock"):
 		return("RepComstock")
+		
+if __name__ == "__main__":
+	CollectPoll("Wexton_Comstock")
+	
