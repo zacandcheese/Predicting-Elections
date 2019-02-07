@@ -104,11 +104,6 @@ def Collect(user, start, end):
 
 		start = increment_day(start, 1)
 
-		
-
-	#with open(twitter_ids_filename, 'w') as outfile:
-	#	json.dump(data_to_write, outfile)
-
 	print('all done here')
 	driver.close()
 	print(main_list)
@@ -152,7 +147,7 @@ def CollectPoll(election_search):
 		
 	print(poll_dict)
 												#dump the dictionary to a seperate file for future use#
-	with open("poll.txt", 'w') as fout:
+	with open(election_search + " poll.txt", 'w') as fout:
 		json.dump(poll_dict, fout)
 		
 		
@@ -165,3 +160,10 @@ def Handle(name):
 		return("JenniferWexton")
 	elif(name == "Comstock"):
 		return("RepComstock")
+		
+if __name__ == "__main__":
+	import datetime
+	from datetime import timedelta
+	end = datetime.datetime(2018, 12, 1)# year, month, day
+	start = end - timedelta(days=7)# a week back from the end
+	Collect("JenniferWexton",start, end)

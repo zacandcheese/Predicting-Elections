@@ -7,3 +7,11 @@ Important Text
 	#Scoring Sentiment
 	#Adds a sentiment score to each line of tweets
 	sentiment.Sentiment(collection_of_tweets)
+	
+https://twitter.com/search?f=tweets&vertical=default&q=from%3Ajenniferwexton%20since%3A2018-06-21%20until%3A2018-06-22include%3Aretweets&src=typd
+https://twitter.com/search?f=tweets&vertical=default&q=from%3Ajenniferwexton%20since%3A2018-11-26%20until%3A2018-11-27include%3Aretweets&src=typd
+
+['21 Jun 2018', "I'm proud to have the support of @Bradybuzz in our fight to flip #VA10! Republicans and the gun lobby have blocked gun violence prevention legislation for too long. #ChangeisComing this November.", '91', '27']
+91 is likes
+27 is retweets
+[date,body, likes, retweets]

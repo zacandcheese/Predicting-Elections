@@ -19,16 +19,16 @@ import sentiment
 #return 
 def Scoring(collection_of_tweets, end):
 	print("\nNEW LINE\n"+ end)
-	print(collection_of_tweets[end][0])
+	print(collection_of_tweets[end])
 			
 if __name__ == '__main__':
-	list_of_canidates = ["Wexton","Comstock"]
+	list_of_canidates = ["Comstock","Wexton"]
 	import json
 		
-	with open("tweets",'r') as fp:
+	with open("Comstock Wexton tweets.txt",'r') as fp:
 		collection_of_tweets = json.load(fp)
 	
 	coordinates_of_tweets = {}
+	print(len(collection_of_tweets.keys()))
 	for date in collection_of_tweets.keys():
-		for j in range(len(list_of_canidates)):
-			coordinates_of_tweets[date+chr(j+65)] = Scoring(collection_of_tweets, date)
+		coordinates_of_tweets[date] = Scoring(collection_of_tweets, date)

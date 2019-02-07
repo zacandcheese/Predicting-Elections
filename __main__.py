@@ -34,11 +34,12 @@ import graphing
 def main():
 												#INTRO#
 	#------------------------------------------------------------------------------------------------#
+	#The convention is alphbetical#
 	if(platform.system() == "Darwin"):#MAC
-		election_search = raw_input("What election: ")#The two last names of the canidates i.e. Wexton Comstock
+		election_search = raw_input("What election: ")#The two last names of the canidates i.e. Comstock Wexton
    
 	if(platform.system() == "Windows"):#WINDOWS
-		election_search = input("What election: ")#The two last names of the canidates i.e. Wexton Comstock
+		election_search = input("What election: ")#The two last names of the canidates i.e. Comstock Wexton
 		
 	"""
 	collection_of_tweets follows this file format
@@ -66,15 +67,15 @@ def main():
 		
 											#Collecting Poll Data#
 	#------------------------------------------------------------------------------------------------#
-	if(os.path.isfile("poll.txt")):
-		with open("poll.txt", 'r') as fp:
+	if(os.path.isfile(election_search + " poll.txt")):
+		with open(election_search + " poll.txt", 'r') as fp:
 			collection_of_polls = json.load(fp)
 	else:
 		collection_of_polls = collecting.CollectPoll(election_search)#collection_of_polls[date] = score name
 	
 	"""Iterate through the dates in the dict of polls and find the corresponding tweets from that week."""
 	if(os.path.isfile("tweets")):
-		with open("tweets",'r') as fp:
+		with open(election_search + " tweets.txt",'r') as fp:
 			collection_of_tweets = json.load(fp)
 
 	else:		
@@ -92,7 +93,7 @@ def main():
 			for canidate in list_of_canidates:
 				collection_of_tweets[(str(end)+chr(i))] = collecting.Collect(canidates_handle[canidate], start, end)
 				i += 1
-		with open("tweets", 'w') as outfile:
+		with open(election_search + " tweets.txt", 'w') as outfile:
 			json.dump(collection_of_tweets, outfile)
 
 											#Scoring Everything#
