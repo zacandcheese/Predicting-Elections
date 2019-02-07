@@ -89,7 +89,7 @@ def Collect(user, start, end):
 					
 					print("USUALY A DATE: " + date)
 					print("TWEET: " + tweet_body)
-					print("LiKES: "+ likes.replace("Like\n",""))
+					print("LIKES: "+ likes.replace("Like\n",""))
 					print("RETWEETS: "+ retweets.replace("Retweet\n",""))
 					
 					date_list.extend((date,tweet_body,likes.replace("Like\n",""),retweets.replace("Retweet\n","")))
@@ -162,8 +162,6 @@ def Handle(name):
 		return("RepComstock")
 		
 if __name__ == "__main__":
-	import datetime
-	from datetime import timedelta
-	end = datetime.datetime(2018, 12, 1)# year, month, day
-	start = end - timedelta(days=7)# a week back from the end
-	Collect("JenniferWexton",start, end)
+	CollectPoll("Wexton_Comstock")
+	
+

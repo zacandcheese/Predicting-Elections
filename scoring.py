@@ -11,7 +11,7 @@ Date: 01/03/2019
 Program Description: This uses the
 dataset to calculate a score.
 """
-import sentiment
+import sentiment, sys, os
 
 #def Score(dataset1):		
 #file = open('C:/Users/nogos/Documents/GitHub/Predicting-Elections/Test.txt', 'r+')
@@ -25,6 +25,7 @@ if __name__ == '__main__':
 	list_of_canidates = ["Comstock","Wexton"]
 	import json
 		
+
 	with open("Comstock Wexton tweets.txt",'r') as fp:
 		collection_of_tweets = json.load(fp)
 	

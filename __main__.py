@@ -19,6 +19,7 @@ __author__ = 'Zachary Nowak, Ethan Saari'
 import json
 import platform
 import os
+import sys
 import datetime
 from datetime import timedelta
 
@@ -67,6 +68,7 @@ def main():
 		
 											#Collecting Poll Data#
 	#------------------------------------------------------------------------------------------------#
+
 	if(os.path.isfile(election_search + " poll.txt")):
 		with open(election_search + " poll.txt", 'r') as fp:
 			collection_of_polls = json.load(fp)
@@ -93,7 +95,10 @@ def main():
 			for canidate in list_of_canidates:
 				collection_of_tweets[(str(end)+chr(i))] = collecting.Collect(canidates_handle[canidate], start, end)
 				i += 1
+
 		with open(election_search + " tweets.txt", 'w') as outfile:
+			#with open(os.path.join(sys.path[0],"tweets"), 'w') as outfile:
+
 			json.dump(collection_of_tweets, outfile)
 
 											#Scoring Everything#
