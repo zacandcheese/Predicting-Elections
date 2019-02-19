@@ -156,30 +156,15 @@ def CollectPoll(election_search):
 	return(poll_dict)
 
 def Handle(name):
-	if(name == "Wexton"):
-		return("JenniferWexton")
-	elif(name == "Comstock"):
-		return("RepComstock")
-	elif(name == "Spanberger"):
-		return("RepSpanberger")
-	elif(name == "Cline"):
-		return("RepBenCline")
-	elif(name == "Scott"):
-		return("BobbyScott")
-	elif(name == "Riggleman"):
-		return("RepRiggleman")
-	elif(name == "Beyer"):
-		return("RepDonBeyer")
-	elif(name == "McEachin"):
-		return("RepMcEachin")
-	elif(name == "Luria"):
-		return("ElaineLuriaVA")
-	elif(name == "Connolly"):
-		return("GerryConnolly")
-	elif(name == "Griffith"):
-		return("RepMGriffith")
-	elif(name == "Wittman"):
-		return("RobWittman")
+	from selenium import webdriver
+	from selenium.webdriver.common.by import By
+	from googlesearch import search
+	import json
+
+	url = []
+	for url2 in search("Twitter Representative " + name, stop=1):
+		url.append(url2)
+	print(url[0].split(".com/",1)[1].split("?",1)[0])
 		
 if __name__ == "__main__":
 	CollectPoll("Wexton_Comstock")
