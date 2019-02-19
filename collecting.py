@@ -160,6 +160,26 @@ def Handle(name):
 		return("JenniferWexton")
 	elif(name == "Comstock"):
 		return("RepComstock")
+	elif(name == "Spanberger"):
+		return("RepSpanberger")
+	elif(name == "Cline"):
+		return("RepBenCline")
+	elif(name == "Scott"):
+		return("BobbyScott")
+	elif(name == "Riggleman"):
+		return("RepRiggleman")
+	elif(name == "Beyer"):
+		return("RepDonBeyer")
+	elif(name == "McEachin"):
+		return("RepMcEachin")
+	elif(name == "Luria"):
+		return("ElaineLuriaVA")
+	elif(name == "Connolly"):
+		return("GerryConnolly")
+	elif(name == "Griffith"):
+		return("RepMGriffith")
+	elif(name == "Wittman"):
+		return("RobWittman")
 		
 if __name__ == "__main__":
 	CollectPoll("Wexton_Comstock")
