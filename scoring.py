@@ -17,10 +17,14 @@ import sentiment, sys, os
 #file = open('C:/Users/nogos/Documents/GitHub/Predicting-Elections/Test.txt', 'r+')
 #sentiment.Sentiment(file)
 #return 
+
 def Scoring(collection_of_tweets, end):
 	print("\nNEW LINE\n"+ end)
-	print(collection_of_tweets[end])
-			
+	try:
+		print(collection_of_tweets[end][1])
+	except IndexError:
+		pass
+		
 if __name__ == '__main__':
 	list_of_canidates = ["Comstock","Wexton"]
 	import json
@@ -31,5 +35,10 @@ if __name__ == '__main__':
 	
 	coordinates_of_tweets = {}
 	print(len(collection_of_tweets.keys()))
+	
+	#[date,body, likes, retweets]
 	for date in collection_of_tweets.keys():
 		coordinates_of_tweets[date] = Scoring(collection_of_tweets, date)
+		
+		
+		

@@ -87,7 +87,7 @@ def main():
 			day = int(date_list[1])
 			end = datetime.datetime(2018, month, day)# year, month, day
 			start = end - timedelta(days=7)# a week back from the end
-			
+			print('\n\n'+ str(start) + " " + str(end) + '\n\n')
 			
 											#Collecting Tweets#
 	#-------------------------------------------------------------------------------------------------#
@@ -98,7 +98,6 @@ def main():
 
 		with open(election_search + " tweets.txt", 'w') as outfile:
 			#with open(os.path.join(sys.path[0],"tweets"), 'w') as outfile:
-
 			json.dump(collection_of_tweets, outfile)
 
 											#Scoring Everything#

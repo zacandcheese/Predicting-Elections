@@ -14,4 +14,4 @@ https://twitter.com/search?f=tweets&vertical=default&q=from%3Ajenniferwexton%20s
 ['21 Jun 2018', "I'm proud to have the support of @Bradybuzz in our fight to flip #VA10! Republicans and the gun lobby have blocked gun violence prevention legislation for too long. #ChangeisComing this November.", '91', '27']
 91 is likes
 27 is retweets
-[date,body, likes, retweets]
+#[date,body, likes, retweets]
