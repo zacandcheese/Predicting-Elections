@@ -21,7 +21,7 @@ import sentiment, sys, os
 def Scoring(collection_of_tweets, end):
 	print("\nNEW LINE\n"+ end)
 	try:
-		print(collection_of_tweets[end][1])
+		print(len(collection_of_tweets[end][1]))
 	except IndexError:
 		pass
 		
