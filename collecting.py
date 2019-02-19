@@ -36,6 +36,7 @@ def Collect(user, start, end):
 	
 	#date list
 	date_list = []
+	
 	# don't mess with this stuff
 	twitter_ids_filename = 'all_ids.json'
 	days = (end - start).days + 1
@@ -92,7 +93,7 @@ def Collect(user, start, end):
 					print("LIKES: "+ likes.replace("Like\n",""))
 					print("RETWEETS: "+ retweets.replace("Retweet\n",""))
 					
-					date_list.extend((date,tweet_body,likes.replace("Like\n",""),retweets.replace("Retweet\n","")))
+					date_list = [date,tweet_body,likes.replace("Like\n",""),retweets.replace("Retweet\n","")]
 					main_list.append(date_list)
 					
 					
