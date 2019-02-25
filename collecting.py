@@ -166,6 +166,10 @@ def Handle(name):
 	for url2 in search("Twitter Representative " + name, stop=1):
 		url.append(url2)
 	print(url[0].split(".com/",1)[1].split("?",1)[0])
+	if(name != "Wexton"):
+		return(url[0].split(".com/",1)[1].split("?",1)[0])
+	else:
+		return("jenniferwexton")
 		
 if __name__ == "__main__":
 	CollectPoll("Wexton_Comstock")

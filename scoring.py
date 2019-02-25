@@ -21,10 +21,17 @@ import sentiment, sys, os
 def Scoring(collection_of_tweets, end):
 	print("\nNEW LINE\n"+ end)
 	try:
-		print(len(collection_of_tweets[end][1]))
+		print((collection_of_tweets[end][1]))
+		print("\n")
+		#Create features
+		tweet = collection_of_tweets[end][1]
+		negative, neutral, positive = sentiment.Sentiment(tweet[1])
+		print("size", len(tweet[1]), "negative: ", negative, "neutral:", neutral,"positive:", positive, "likes", tweet[2],"retweets", tweet[3])
 	except IndexError:
 		pass
-		
+	
+
+	
 if __name__ == '__main__':
 	list_of_canidates = ["Comstock","Wexton"]
 	import json

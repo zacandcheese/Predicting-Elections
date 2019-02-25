@@ -10,3 +10,4 @@ plt.title('Sigmoid Function')
 plt.grid()
 plt.text(4, 0.8, r'$\sigma(x)=\frac{1}{1+e^{-x}}$', fontsize=16)
 plt.show()
+
