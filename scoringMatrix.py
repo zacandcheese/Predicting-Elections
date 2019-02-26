@@ -153,12 +153,13 @@ class scoringMatrix:
 		
 if __name__ == '__main__':
 	
-	input = [2,6]
+	input = [1,2,3]
 	print(input)
 	
 	matrix = scoringMatrix(num_of_factors = len(input),num_of_weights = 3, learning_rate = 0.01)
 	#TRAIN THE MATRIX
-	train_data = [(1,2,3),(1,2.05,3.05), (4,5,9), (1,1,2)]
+	train_data = [(1,1,2,4),(1, 1,2.05,4.05), (1,4,5,10), (1,1,1,3)]
+	#train_data = [(2,4),(3,6),(4,8)]
 	for i in range(4000):
 		for set in train_data:
 			matrix.train(set[0:-1],set[-1])

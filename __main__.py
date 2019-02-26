@@ -76,7 +76,7 @@ def main():
 		collection_of_polls = collecting.CollectPoll(election_search)#collection_of_polls[date] = score name
 	
 	"""Iterate through the dates in the dict of polls and find the corresponding tweets from that week."""
-	if(os.path.isfile("tweets")):
+	if(os.path.isfile(election_search + " tweets.txt")):
 		with open(election_search + " tweets.txt",'r') as fp:
 			collection_of_tweets = json.load(fp)
 
