@@ -94,7 +94,7 @@ class scoringMatrix:
 		"""
 		error = output_errors[0,0]
 		relative_error = error/target_vector[0,0]
-		
+		#print(output_vector2)
 		#print("Output Error", output_errors)
 		"""
 		# update the weights:
@@ -110,7 +110,13 @@ class scoringMatrix:
 		self.weights_hidden_out = tmp.T + self.weights_hidden_out
 		"""
 		#----------------------------PART 1------------------------------#
-		coefficient_of_error = -1 * error * (sigmoid(error) - 0.5)
+		coefficient_of_error = -1 * error * (sigmoid(error)) * self.learning_rate
+		"""
+		if( coefficient_of_error > 0):
+			print("+++++++++++++")
+		else:
+			print("-------------")
+		"""
 		self.weights_hidden_out =  (1 - coefficient_of_error) * self.weights_hidden_out
 		
 		
@@ -127,12 +133,17 @@ class scoringMatrix:
 		self.weights_in_hidden += x
 		"""
 		hidden_errors = np.dot(output_errors, self.weights_hidden_out.T) #returns [value1, value2, value3, ... valueN]
-		print(hidden_errors[0][0])
-		identity_matrix = np.zero(self.num_of_weights,self.num_of_weights)
+
+		identity_matrix = np.zeros((self.num_of_weights,self.num_of_weights))
+		i = 0
+		for err in hidden_errors[0]:
+			coefficient_of_error = -1* err * (sigmoid(err)) * self.learning_rate * (1-sigmoid(err)) #normalize it
+			identity_matrix[i][i] = coefficient_of_error
+			i+=1
 		
-		
-		coefficient_of_error = -1 * error * (sigmoid(error) - 0.5) * (1-(sigmoid(error)-0.5)) #normalize it
-		self.weights_in_hidden #matrix that has been modified
+		#print(np.dot(self.weights_in_hidden , identity_matrix)) #matrix that has been modified
+		tmp = (np.dot(self.weights_in_hidden , identity_matrix)) #matrix that has been modified
+		self.weights_in_hidden += tmp
 		
 	def run(self, input_vector):
 		output_vector = np.dot(input_vector, self.weights_in_hidden)
@@ -142,13 +153,13 @@ class scoringMatrix:
 		
 if __name__ == '__main__':
 	
-	input = [1,2]
+	input = [2,6]
 	print(input)
 	
-	matrix = scoringMatrix(num_of_factors = len(input),num_of_weights = 2, learning_rate = 0.6)
+	matrix = scoringMatrix(num_of_factors = len(input),num_of_weights = 3, learning_rate = 0.01)
 	#TRAIN THE MATRIX
-	train_data = [(1,2,4),(1,2,4),(1,3,6),(1,3,6)]
-	for i in range(2):
+	train_data = [(1,2,3),(1,2.05,3.05), (4,5,9), (1,1,2)]
+	for i in range(4000):
 		for set in train_data:
 			matrix.train(set[0:-1],set[-1])
 		
