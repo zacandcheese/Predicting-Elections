@@ -13,7 +13,7 @@ over the specific time stamp
 """
 import matplotlib.pyplot as plt
 
-def Graph(xdata, ydata, xname, yname, title):
+def Graph(xdata, ydata):
 	plt.plot(xdata, ydata, color='blue')
 	plt.ylabel(xname)
 	plt.xlabel(yname)
