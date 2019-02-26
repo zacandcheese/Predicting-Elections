@@ -109,6 +109,7 @@ def main():
 	"""FIXME"""
 	#Coordinates of polls needs to be tuned#
 	
+	graphing.MakeGraphs(collection_of_tweets)
 	graphing.Graph(coordinates_of_polls, coordinates_of_tweets)
 	
 if __name__ == '__main__':
