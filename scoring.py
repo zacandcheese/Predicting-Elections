@@ -48,4 +48,3 @@ if __name__ == '__main__':
 		coordinates_of_tweets[date] = Scoring(collection_of_tweets, date)
 		
 		
-		
