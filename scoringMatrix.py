@@ -96,19 +96,7 @@ class scoringMatrix:
 		relative_error = error/target_vector[0,0]
 		#print(output_vector2)
 		#print("Output Error", output_errors)
-		"""
-		# update the weights:
-		tmp = output_errors #* output_vector2 * (1.0 - output_vector2)
-		#print("tmp first pass", tmp)
-		tmp = sigmoid(tmp)
-		#print("tmp second pass", tmp)
-		tmp = self.learning_rate * np.dot(tmp, output_vector_hidden)
-		#print("tmp third pass", tmp)
-		#print("weights", self.weights_hidden_out)
-		
-		#NEED TO MAKE A MATRIX
-		self.weights_hidden_out = tmp.T + self.weights_hidden_out
-		"""
+
 		#----------------------------PART 1------------------------------#
 		coefficient_of_error = -1 * error * (sigmoid(error)) * self.learning_rate
 		"""
@@ -121,17 +109,6 @@ class scoringMatrix:
 		
 		
 		#----------------------------PART 2------------------------------#
-		"""
-		# calculate hidden errors:
-		
-		print("hidden errors", hidden_errors)
-		# update the weights:
-		print(sigmoid(error))
-		tmp = hidden_errors * (sigmoid(error)) * (1 - sigmoid(error))
-		x = self.learning_rate * np.dot(input_vector.T, tmp)
-		print(x)
-		self.weights_in_hidden += x
-		"""
 		hidden_errors = np.dot(output_errors, self.weights_hidden_out.T) #returns [value1, value2, value3, ... valueN]
 
 		identity_matrix = np.zeros((self.num_of_weights,self.num_of_weights))
@@ -141,7 +118,6 @@ class scoringMatrix:
 			identity_matrix[i][i] = coefficient_of_error
 			i+=1
 		
-		#print(np.dot(self.weights_in_hidden , identity_matrix)) #matrix that has been modified
 		tmp = (np.dot(self.weights_in_hidden , identity_matrix)) #matrix that has been modified
 		self.weights_in_hidden += tmp
 		
