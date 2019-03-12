@@ -20,7 +20,6 @@ def Sentiment(tweet):
 	set_api_key("VIJL2MNSIraV6xzz2fNepEPdGX86Rxd7s0JvCqwqAEI")
 	score = sentiment(tweet)
 	data = json.dumps(score)
-	print(score)
 	result = data.split('{')[2]
 	finalResult = result.split('}')[0]
 	negative = score['probabilities']['negative']
@@ -31,4 +30,24 @@ def Sentiment(tweet):
 	return(negative, neutral, positive)
 	
 if __name__== '__main__':
-	Sentiment("hi zach")
+	new_dict = {}
+	with open("Comstock Wexton tweets.txt", 'r') as fp:
+		collection_of_tweets = json.load(fp)
+		for date in collection_of_tweets.keys():
+			for tweet in collection_of_tweets[date]:
+				try:
+					#print((tweet[1]))
+					
+					#tweet.append(Sentiment(tweet[1])[0])
+					print(tweet)
+					appendBoi = tweet
+					print("Hi: ", appendBoi)
+					new_dict[date] = appendBoi
+				except IndexError:
+					pass
+				except TypeError:
+					pass
+					
+	print(new_dict)
+	with open("Stuff", 'w') as fp:
+		json.dump(new_dict, fp)
