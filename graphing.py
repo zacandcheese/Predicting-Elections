@@ -31,12 +31,12 @@ def value_to_float(x):
 			return float(x.replace('M', '')) * 1000000
 		return 1000000.0
 	if 'Like' in x:
-		print(x)
 		return 10
 	else:
 		return float(x)
-def MakeGraphs():
-	with open("Comstock Wexton tweets.txt",'r') as fp:
+
+def MakeGraphs(name_of_file):
+	with open(name_of_file,'r') as fp:
 		collection_of_tweets = json.load(fp)
 	
 	coordinates_of_tweets = {}
@@ -83,8 +83,8 @@ def Graph(xdata, ydata, xname, title):
 	plt.show()
 	return None;
 
-def GraphPolls():
-	with open( "Comstock Wexton poll.txt", 'r') as fp:
+def GraphPolls(name_of_file):
+	with open( name_of_file, 'r') as fp:
 		collection_of_polls = json.load(fp)
 		print(collection_of_polls)
 	coordinates_of_polls = {}
@@ -115,5 +115,6 @@ def GraphPolls():
 	plt.legend()
 	plt.gcf().autofmt_xdate()
 	plt.show()
+	
 if __name__=="__main__":
-	GraphPolls()
+	MakeGraphs("Comstock Wexton tweets.txt")

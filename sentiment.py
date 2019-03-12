@@ -20,6 +20,7 @@ def Sentiment(tweet):
 	set_api_key("VIJL2MNSIraV6xzz2fNepEPdGX86Rxd7s0JvCqwqAEI")
 	score = sentiment(tweet)
 	data = json.dumps(score)
+
 	result = data.split('{')[2]
 	finalResult = result.split('}')[0]
 	negative = score['probabilities']['negative']
