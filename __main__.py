@@ -80,21 +80,30 @@ def main():
 		with open(election_search + " tweets.txt",'r') as fp:
 			collection_of_tweets = json.load(fp)
 
-	else:		
+	else:
+										#Collecting Over The Whole Election#
+	#-----------------------------------------------------------------------------------------------#
+		poll_list = []
 		for date in collection_of_polls:
-			date_list = date.split("/")
-			month = int(date_list[0])
-			day = int(date_list[1])
-			end = datetime.datetime(2018, month, day)# year, month, day
-			start = end - timedelta(days=7)# a week back from the end
-			print('\n\n'+ str(start) + " " + str(end) + '\n\n')
+			poll_list.append(date)
+		
+		print(poll_list)
+		StartDate = poll_list[-1]
+		month = int(StartDate.split("/")[0])
+		day = int(StartDate.split("/")[1])
+		start = datetime.datetime(2018, month, day)
+		
+		EndDate = poll_list[0]
+		month = int(EndDate.split("/")[0])
+		day = int(EndDate.split("/")[0])
+		end = datetime.datetime(2018, month, day)
 			
 											#Collecting Tweets#
-	#-------------------------------------------------------------------------------------------------#
-			i = 65 #ASCII for the letter A
-			for canidate in list_of_canidates:
-				collection_of_tweets[(str(end)+chr(i))] = collecting.Collect(canidates_handle[canidate], start, end)
-				i += 1
+	#-----------------------------------------------------------------------------------------------#
+		i = 65 #ASCII for the letter A
+		for canidate in list_of_canidates:
+			collection_of_tweets[(str(end)+chr(i))] = collecting.Collect(canidates_handle[canidate], start, end)
+			i += 1
 
 		with open(election_search + " tweets.txt", 'w') as outfile:
 			#with open(os.path.join(sys.path[0],"tweets"), 'w') as outfile:
