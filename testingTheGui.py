@@ -1,3 +1,4 @@
+import __main__
 try:
     # for Python2
     import Tkinter as tk
@@ -6,15 +7,16 @@ except ImportError:
     import tkinter as tk
 	
 from tkinter import *
+import scoring
 
 remaining = 0
 
-def snooze (secs):
+def snooze ():
   """
   Snoozes for the given number of seconds. During the snooze, a progress
   dialog is launched notifying the 
   """
-
+  secs=10
   global remaining
   root = Tk()
   prompt = 'hello'
@@ -22,7 +24,7 @@ def snooze (secs):
   label1.pack()
 
   remaining = secs
-
+  
   def decrement_label ():
     global remaining
     text = "Snoozing %d sec(s)" % remaining
@@ -47,7 +49,7 @@ def changeNode(array_text):
 	prompt = array_text
 	array = tk.Label(root, text=prompt, width=len(prompt))
 	array.pack()
-
+			
 	def update():	
 		global weight
 		text = "array is %d " % weight
@@ -60,4 +62,17 @@ def changeNode(array_text):
 	
 	root.mainloop()
 
-changeNode([1,2,3])
+		
+def doStuff(method):
+	root = tk.Tk()
+	frame = tk.Frame(root)
+	frame.pack()
+
+	button = tk.Button(frame, text="QUIT", fg="red", command=quit)
+	button.pack(side=tk.LEFT)
+	slogan = tk.Button(frame, text="Main", command=method)
+	slogan.pack(side=tk.LEFT)
+	anotherOne = tk.Button(frame, text="Score", command=scoring.Scoring)
+	anotherOne.pack(side=tk.LEFT)
+
+	root.mainloop()
