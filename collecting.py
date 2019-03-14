@@ -151,7 +151,6 @@ def CollectPoll(election_search):
 	with open(election_search + " poll.txt", 'w') as fout:
 		json.dump(poll_dict, fout)
 		
-		
 	assert "No results found." not in driver.page_source
 	driver.close()
 	return(poll_dict)
@@ -172,6 +171,6 @@ def Handle(name):
 		return("jenniferwexton")
 		
 if __name__ == "__main__":
-	CollectPoll("Wexton_Comstock")
+	CollectPoll("Kaine_Stewart")
 	
 
