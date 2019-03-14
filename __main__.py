@@ -91,12 +91,14 @@ def main():
 		StartDate = poll_list[-1]
 		month = int(StartDate.split("/")[0])
 		day = int(StartDate.split("/")[1])
-		start = datetime.datetime(2018, month, day)
+		#start = datetime.datetime(2018, month, day)#FIXME
+		start = datetime.datetime(2018, 6, 1)
 		
 		EndDate = poll_list[0]
 		month = int(EndDate.split("/")[0])
 		day = int(EndDate.split("/")[0])
-		end = datetime.datetime(2018, month, day)
+		#end = datetime.datetime(2018, month, day)#FIXME
+		end = datetime.datetime(2018, 11, 6)	
 			
 											#Collecting Tweets#
 	#-----------------------------------------------------------------------------------------------#

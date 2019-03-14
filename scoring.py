@@ -11,7 +11,8 @@ Date: 01/03/2019
 Program Description: This uses the
 dataset to calculate a score.
 """
-import sentiment, sys, os, json, numpy
+import sentiment
+import sys, os, json, numpy
 from datetime import date
 import calendar
 abbr_to_num = {name: num for num, name in enumerate(calendar.month_abbr) if num}
@@ -114,6 +115,7 @@ def ConvertTweets(name_of_file):
 	print("DONE")
 	
 	with open(name_of_file + " compiled.txt", 'w') as fout:
+		print(compiled)
 		json.dump(compiled, fout)
 	
 	return(compiled)

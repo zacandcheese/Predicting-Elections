@@ -39,3 +39,5 @@ dayArray = [date, int(avglikes), int(avgretweets), int(toplikes), int(topretweet
 	except IndexError:
 		pass
 	"""
+	
+C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_64
