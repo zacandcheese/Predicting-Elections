@@ -125,7 +125,7 @@ def CollectPoll(election_search):
 										   #get the html file and search for the poll#
 	driver = webdriver.Chrome()
 	driver.get(html_file)
-
+													   #get the poll data#
 	xpath = ("/html/body[@class='polls']/div[@id='container']/div[@class='alpha-container ']/div[@class='alpha']/div[@id='polling-data-full']/table[@class='data large ']/tbody")
 	table_id = driver.find_element(By.XPATH, xpath)
 	rows = table_id.find_elements(By.TAG_NAME, "tr")#get all of the rows in the table
@@ -134,6 +134,9 @@ def CollectPoll(election_search):
 
 	for row in rows:
 		line = row.text.split(" ")#seperate the string line to format more like a table
+		if(line[0] == 'Final'):
+			print('Final Result', line[-2]+ line[-1])
+			poll_dict['11/6'] = line[-2]+line[-1]
 		try:
 			if('/' in line[-10]): #Checks to see if that spot is a date
 				#Date, Name of Canidate in Favor, Score
@@ -147,6 +150,12 @@ def CollectPoll(election_search):
 		
 		
 	print(poll_dict)
+	
+															#get the final result#
+	xpath = ("/html/body[@class='polls']/div[@id='container']/div[@class='alpha-container ']/div[@class='alpha']/div[@id='polling-data-rcp']/table[@class='data large ']/tbody/tr[@class='final']/td[@class='spread']/span[@class='dem']")
+	id = driver.find_element(By.XPATH, xpath)
+	print(id)
+	
 												#dump the dictionary to a seperate file for future use#
 	with open(election_search + " poll.txt", 'w') as fout:
 		json.dump(poll_dict, fout)

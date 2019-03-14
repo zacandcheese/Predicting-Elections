@@ -26,3 +26,16 @@ https://twitter.com/search?f=tweets&vertical=default&q=from%3Ajenniferwexton%20s
 			print('\n\n'+ str(start) + " " + str(end) + '\n\n')"""
 			
 			
+dayArray = [date, int(avglikes), int(avgretweets), int(toplikes), int(topretweets)]
+	"""
+	print("\nNEW LINE\n"+ end)
+	try:
+		print((collection_of_tweets[end][1]))
+		print("\n")
+		#Create features
+		tweet = collection_of_tweets[end][1]
+		negative, neutral, positive = sentiment.Sentiment(tweet[1])
+		print("size", len(tweet[1]), "negative: ", negative, "neutral:", neutral,"positive:", positive, "likes", tweet[2],"retweets", tweet[3])
+	except IndexError:
+		pass
+	"""

@@ -12,6 +12,9 @@ Program Description: This uses the
 dataset to calculate a score.
 """
 import sentiment, sys, os, json, numpy
+from datetime import date
+import calendar
+abbr_to_num = {name: num for num, name in enumerate(calendar.month_abbr) if num}
 
 #def Score(dataset1):		
 #file = open('C:/Users/nogos/Documents/GitHub/Predicting-Elections/Test.txt', 'r+')
@@ -26,7 +29,7 @@ def ConvertTweets(name_of_file):
 
 		currentDay = collection_of_tweets[canidate][0][0]
 		listPerDay = []
-		listDayBefore = ['',0,0,0,0]
+		listDayBefore = [0,0,0,0,0]
 		listOfSummaries = []
 		print(canidate)#, currentDay, listPerDay, listDayBefore)
 		for tweet in collection_of_tweets[canidate]:
@@ -38,7 +41,7 @@ def ConvertTweets(name_of_file):
 					#NewDay!
 					currentDay = tweet[0] #FIXME Current day wasn't updating right
 					#SUMMARY of the old list
-					date = ""
+					date1 = 0
 					avglikes = 0
 					avgretweets = 0
 					toplikes = 0;
@@ -58,10 +61,20 @@ def ConvertTweets(name_of_file):
 								
 								avglikes += float(day[2])/len(listPerDay)
 								avgretweets += float(day[3])/len(listPerDay)
-								date = day[0]
+								date1 = day[0]
+								
+								
+								year = int(date1.split(" ")[2])
+								month = ((date1.split(" ")[1]))
+								month = (abbr_to_num[month])
+								newday = int(date1.split(" ")[0])
+								new_date = date(year, month, newday)
+								
+								yday = (new_date - date(2018, 1, 1)).days
+								date1 = yday
 								#sneg, sneu, spos = sentiment.Sentiment(day[1]) FIXME
 							except ValueError:
-								date = ""
+								date1 = 0
 								avglikes = 0
 								avgretweets = 0
 								toplikes = 0;
@@ -69,14 +82,19 @@ def ConvertTweets(name_of_file):
 								spos = 0;
 								sneg = 0;
 								sneu = 0;
-						dayArray = [date, int(avglikes), int(avgretweets), int(toplikes), int(topretweets)]
+								yday = 0;
+								
 						
-						arr1 = numpy.array(dayArray[1:])
-						arr2 = numpy.array(listDayBefore[1:])
+						dayArray = [date1, int(avglikes), int(avgretweets), int(toplikes), int(topretweets)]
+						
+						arr1 = numpy.array(dayArray)
+						arr2 = numpy.array(listDayBefore)
 						#print(arr1, arr2)
-						print("SUMMARY---------------------", arr1 - arr2)
+						sum = (arr1 - arr2)
+						sum[0] = date1
+						print("SUMMARY---------------------", sum)
 						#listOfSummaries.append(dayArray)#TEMPORARY 
-						listOfSummaries.append(arr1 - arr2)#FIXME
+						listOfSummaries.append(sum)#FIXME
 						listDayBefore = dayArray
 					
 					#Update to set up for new day
@@ -94,7 +112,12 @@ def ConvertTweets(name_of_file):
 		listDayBefore.clear()
 		#Dont clear a list you eventually want to return it destroys the memory idiot.
 	print("DONE")
+	
+	with open(name_of_file + " compiled.txt", 'w') as fout:
+		json.dump(compiled, fout)
+	
 	return(compiled)
+	
 	#print(compiled)
 				#-------------------------------------#
 		# for each day I need to get the average likes and retweets #
@@ -103,18 +126,6 @@ def ConvertTweets(name_of_file):
 		
 	
 def Scoring(collection_of_tweets, end):
-	"""
-	print("\nNEW LINE\n"+ end)
-	try:
-		print((collection_of_tweets[end][1]))
-		print("\n")
-		#Create features
-		tweet = collection_of_tweets[end][1]
-		negative, neutral, positive = sentiment.Sentiment(tweet[1])
-		print("size", len(tweet[1]), "negative: ", negative, "neutral:", neutral,"positive:", positive, "likes", tweet[2],"retweets", tweet[3])
-	except IndexError:
-		pass
-	"""
 	pass
 	
 
@@ -134,19 +145,3 @@ if __name__ == '__main__':
 			except IndexError:
 				pass
 		print(sum)
-	"""
-	list_of_canidates = ["Comstock","Wexton"]
-	import json
-		
-
-	with open(,'r') as fp:
-		collection_of_tweets = json.load(fp)
-	
-	coordinates_of_tweets = {}
-	print(len(collection_of_tweets.keys()))
-	
-	#[date,body, likes, retweets]
-	for date in collection_of_tweets.keys():
-		coordinates_of_tweets[date] = Scoring(collection_of_tweets, date)
-	"""	
-		
