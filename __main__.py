@@ -122,4 +122,6 @@ def main():
 	graphing.Graph(coordinates_of_polls, coordinates_of_tweets)
 	
 if __name__ == '__main__':
-	main()
+	import testingTheGui
+	testingTheGui.doStuff(main)
+	#main()
