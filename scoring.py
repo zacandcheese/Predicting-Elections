@@ -17,6 +17,9 @@ from datetime import date
 import calendar
 abbr_to_num = {name: num for num, name in enumerate(calendar.month_abbr) if num}
 
+#ADDED 3/14
+import codecs, json
+
 #def Score(dataset1):		
 #file = open('C:/Users/nogos/Documents/GitHub/Predicting-Elections/Test.txt', 'r+')
 #sentiment.Sentiment(file)
@@ -27,8 +30,10 @@ def ConvertTweets(name_of_file):
 		collection_of_tweets = json.load(fp)
 	compiled = {}
 	for canidate in collection_of_tweets.keys():
-
-		currentDay = collection_of_tweets[canidate][0][0]
+		try:
+			currentDay = collection_of_tweets[canidate][0][0]
+		except IndexError:
+			currentDay = "1 Nov 2018"
 		listPerDay = []
 		listDayBefore = [0,0,0,0,0]
 		listOfSummaries = []
@@ -75,7 +80,6 @@ def ConvertTweets(name_of_file):
 								date1 = yday
 								#sneg, sneu, spos = sentiment.Sentiment(day[1]) FIXME
 							except ValueError:
-								date1 = 0
 								avglikes = 0
 								avgretweets = 0
 								toplikes = 0;
@@ -95,7 +99,9 @@ def ConvertTweets(name_of_file):
 						sum[0] = date1
 						print("SUMMARY---------------------", sum)
 						#listOfSummaries.append(dayArray)#TEMPORARY 
-						listOfSummaries.append(sum)#FIXME
+						#listOfSummaries.append(sum)#FIXME
+						listOfSummaries.append(sum.tolist())#FIXME
+						
 						listDayBefore = dayArray
 					
 					#Update to set up for new day
@@ -133,17 +139,20 @@ def Scoring(collection_of_tweets, end):
 
 	
 if __name__ == '__main__':
-	name_of_file = "Comstock Wexton tweets.txt"
+	#name_of_file = "Comstock Wexton tweets.txt"
+	#name_of_file = "Kaine Stewart tweets.txt"
+	name_of_file = "Brat Spanberger tweets.txt"
 	"""with open(name_of_file, 'r') as fp:
 		collection_of_tweets = json.load(fp)
 	for canidate in collection_of_tweets.keys():
 		print(collection_of_tweets[canidate], "\n")"""
 	dict = ConvertTweets(name_of_file)
-	for canidate in dict.keys():
-		sum = 0
-		for entry in dict[canidate]:
-			try:
-				sum += entry[2]
-			except IndexError:
-				pass
-		print(sum)
+	with open(name_of_file + " compiled.txt", 'r') as fin:
+		b = json.load(fin)
+		for canidate in b.keys():
+			print(canidate)
+			sum = 0;
+			for entry in b[canidate]:
+				a = numpy.array(entry)
+				sum += a[1]
+			print(sum)

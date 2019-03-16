@@ -92,7 +92,7 @@ def main():
 		month = int(StartDate.split("/")[0])
 		day = int(StartDate.split("/")[1])
 		#start = datetime.datetime(2018, month, day)#FIXME
-		start = datetime.datetime(2018, 6, 1)
+		start = datetime.datetime(2018, 8, 1)
 		
 		EndDate = poll_list[0]
 		month = int(EndDate.split("/")[0])
@@ -113,6 +113,7 @@ def main():
 
 											#Scoring Everything#
 	#-----------------------------------------------------------------------------------------------#
+	compDict = scoring.ConvertTweets(election_search + " tweets.txt")
 	for date in collection_of_tweets.keys():
 		for j in range(len(list_of_canidates)):
 			coordinates_of_tweets[date+chr(j+65)] = scoring.Scoring(collection_of_tweets, date)
