@@ -35,7 +35,7 @@ import graphing
 import operator
 matrix1, x1, y1 = matrix.run(listArr[0])
 matrix2, x2, y2 = matrix.run(listArr[1])
-graphing.GraphCompiled(x1, y1, x2, y2 )
+#graphing.GraphCompiled(x1, y1, x2, y2 )
 #NEED TO CONVERT TO USE X1-X2 AND HAVE DATES
 
 """
@@ -48,6 +48,7 @@ for i in range(x2[0],x2[-1]):
 	else:
 		dict1[i] = 0
 """
+	
 
 def Order(x1, y1):
 	j=0;
@@ -73,6 +74,36 @@ def Order(x1, y1):
 
 x1, y1 = Order(x1, y1)
 x2, y2 = Order(x2, y2)
-y = [a_i - b_i for a_i, b_i in zip(y1, y2)]
+
+y = [(a_i - b_i) for a_i, b_i in zip(y1, y2)] #CORRECT GRAPH OF DIFFERENCE PER DAY
 
 graphing.Graph(x1, y, "Dates", "Comstock v. Wexton")
+y_1 = []
+y_2 = []
+last = 0
+for i in range(len(y1)):
+	y_1.append(y1[i]+last)
+	last += y1[i]
+last = 0
+for i in range(len(y2)):
+	y_2.append(y2[i]+last)
+	last += y2[i]
+
+print(y_1)
+graphing.GraphCompiled(x1, y1, x2, y2 ) #CORRECT GRAPH OF DIFFERENCE OVER TIME
+
+
+						#CORRECT GRAPH FOR PERCENTAGE OF PEOPLE
+#---------------------------------------------------------------------------------#
+y = []
+y_1 = []
+y_2 = []
+difference = 0
+for i in range(len(y1)):
+	difference += y1[i] - y2[i]
+	
+	y_1.append(50+(difference/2)) #CANDIDATE 1
+	y_2.append(50-(difference/2)) #CANDIDATE 2
+
+graphing.GraphCompiled(x1, y_1, x2, y_2 ) #CORRECT GRAPH OF DIFFERENCE OVER TIME
+	

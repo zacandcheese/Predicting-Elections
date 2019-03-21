@@ -97,7 +97,7 @@ def GraphPolls(name_of_file):
 	#Make Dates
 	for date in collection_of_polls.keys():
 		stuff = collection_of_polls[date]
-		value = (int(stuff.split("+")[1]))
+		value = (float(stuff.split("+")[1]))
 		print(date.split("/")[0])#month
 		
 		year = 2019
@@ -119,12 +119,10 @@ def GraphPolls(name_of_file):
 	
 def GraphCompiled(xArr1, yArr1, xArr2, yArr2):
 	#assume it is every day
-	plt.plot(xArr1, yArr1, color='blue')
-	plt.plot(xArr2, yArr2, color='red')
+	plt.plot(xArr1, yArr1, color='red')
+	plt.plot(xArr2, yArr2, color='blue')
 	plt.show()
-
-
-
 	
 if __name__=="__main__":
-	MakeGraphs("Comstock Wexton tweets.txt")
+	#MakeGraphs("Comstock Wexton tweets.txt")
+	GraphPolls("Comstock Wexton poll.txt")

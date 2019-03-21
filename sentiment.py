@@ -36,22 +36,23 @@ if __name__== '__main__':
 	with open("Comstock Wexton tweets.txt", 'r') as fp:
 		collection_of_tweets = json.load(fp)
 		for date in collection_of_tweets.keys():
+			appendBoi = []
 			for tweet in collection_of_tweets[date]:
 				try:
-					time.sleep(5)
+					time.sleep(3) #find value
 					negative, neutral, positive = Sentiment(tweet[1])
 					tweet.append(negative)
 					tweet.append(neutral)
 					tweet.append(positive)
-					appendBoi = tweet
+					appendBoi.append(tweet)
 					print(tweet)
-					new_dict[date] = appendBoi
 				except IndexError:
 					print("INDEXERROR")
 					pass
 				except TypeError:
 					print("TYPEERROR")
 					pass
+			new_dict[date] = appendBoi
 					
 	print(new_dict)
 	with open("Stuff", 'w') as fp:

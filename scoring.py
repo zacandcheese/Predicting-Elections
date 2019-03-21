@@ -146,7 +146,7 @@ def loadMatrix(name_of_file):
 		
 	
 def Scoring(name_of_file, list_of_collection_of_tweets, final_result):
-	n = 1001
+	n = 501
 	size = (len(list_of_collection_of_tweets[1][1]))	
 	matrix = scoringMatrix.scoringMatrixOverTime(num_of_factors = size, num_of_weights = 4, learning_rate = 0.1, method = doNothing)
 	for i in range(n):
