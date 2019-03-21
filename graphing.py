@@ -77,7 +77,8 @@ def MakeGraphs(name_of_file):
 	
 def Graph(xdata, ydata, xname, title):
 	plt.plot(xdata, ydata, color='blue')
-	plt.ylabel("Dates")
+	plt.plot(xdata, [0]*len(xdata), color='black')
+	plt.ylabel("Change %")
 	plt.xlabel(xname)
 	plt.title(title)
 	plt.show()
@@ -115,6 +116,15 @@ def GraphPolls(name_of_file):
 	plt.legend()
 	plt.gcf().autofmt_xdate()
 	plt.show()
+	
+def GraphCompiled(xArr1, yArr1, xArr2, yArr2):
+	#assume it is every day
+	plt.plot(xArr1, yArr1, color='blue')
+	plt.plot(xArr2, yArr2, color='red')
+	plt.show()
+
+
+
 	
 if __name__=="__main__":
 	MakeGraphs("Comstock Wexton tweets.txt")

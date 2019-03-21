@@ -41,3 +41,26 @@ dayArray = [date, int(avglikes), int(avgretweets), int(toplikes), int(topretweet
 	"""
 	
 C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_64
+
+	"""with open(name_of_file, 'r') as fp:
+		collection_of_tweets = json.load(fp)
+	for canidate in collection_of_tweets.keys():
+		print(collection_of_tweets[canidate], "\n")"""
+		
+		
+(array([[0.00172978, 0.06625577, 0.00816722, 0.1892388 ],
+       [0.02225669, 0.06053667, 0.07629531, 0.02418538],
+       [0.00106769, 0.00236637, 0.00670665, 0.33573116],
+       [0.04132664, 0.02179714, 0.07445576, 0.19665581],
+       [0.01782951, 0.05813773, 0.05666512, 0.01181099]]), array([[1.38695770e-02],
+       [3.07125640e-03],
+       [1.67066943e-03],
+       [5.28457924e-05]]))
+	   
+	   
+	   
+	   
+#TODO
+sentiment that can run overnight
+fix/clean up code
+MATH

@@ -15,6 +15,7 @@ import sentiment
 import sys, os, json, numpy
 from datetime import date
 import calendar
+import scoringMatrix
 abbr_to_num = {name: num for num, name in enumerate(calendar.month_abbr) if num}
 
 #ADDED 3/14
@@ -24,7 +25,8 @@ import codecs, json
 #file = open('C:/Users/nogos/Documents/GitHub/Predicting-Elections/Test.txt', 'r+')
 #sentiment.Sentiment(file)
 #return 
-
+def doNothing(x):
+	pass
 def ConvertTweets(name_of_file):
 	with open(name_of_file, 'r') as fp:
 		collection_of_tweets = json.load(fp)
@@ -131,28 +133,64 @@ def ConvertTweets(name_of_file):
 		# for each day I need to get the average likes and retweets #
 		# senitment and the difference from the day before, iterate #
 		# through each day ... #
+def loadMatrix(name_of_file):
+	with open(name_of_file, 'r') as file:
+		b = json.load(file)
+		"""
+		for matrix in b:
+			print(numpy.array(matrix))
+		"""
+		arr1 = numpy.array(b[0])
+		arr2 = numpy.array(b[1])
+		return arr1, arr2
 		
 	
-def Scoring(collection_of_tweets, end):
-	pass
+def Scoring(name_of_file, list_of_collection_of_tweets, final_result):
+	n = 1001
+	size = (len(list_of_collection_of_tweets[1][1]))	
+	matrix = scoringMatrix.scoringMatrixOverTime(num_of_factors = size, num_of_weights = 4, learning_rate = 0.1, method = doNothing)
+	for i in range(n):
+		matrix.train(list_of_collection_of_tweets[i%2],final_result[i%2])
+		if(i%100 == 0):
+			print(i)
+						#upload matrix#
+	#-------------------------------------------------------------#
+	with open(name_of_file, 'w') as file:
+		json.dump([(matrix.getMatrix()[0]).tolist(),(matrix.getMatrix()[1]).tolist()], file)
+
+	print(matrix.getMatrix())
 	
+	print("-----------",matrix.run(list_of_collection_of_tweets[0]))
+	print("-----------",matrix.run(list_of_collection_of_tweets[1]))
 
 	
 if __name__ == '__main__':
-	#name_of_file = "Comstock Wexton tweets.txt"
-	#name_of_file = "Kaine Stewart tweets.txt"
-	name_of_file = "Brat Spanberger tweets.txt"
-	"""with open(name_of_file, 'r') as fp:
-		collection_of_tweets = json.load(fp)
-	for canidate in collection_of_tweets.keys():
-		print(collection_of_tweets[canidate], "\n")"""
-	dict = ConvertTweets(name_of_file)
+	name_of_file = "Comstock Wexton tweets.txt"
+	final_result_file = "Comstock Wexton poll.txt"
+	final_result = 0
+	
+	with open(final_result_file, 'r') as file:
+		dict = json.load(file)
+		final_result = dict['11/6']
+		final_result = (float(final_result.split('+')[1]))
+		result_list = []
+		final_result_a = 50-final_result/2
+		result_list.append(final_result_a)
+		final_result_b = 50+final_result
+		result_list.append(final_result_b)
+
+	#dict = ConvertTweets(name_of_file)
 	with open(name_of_file + " compiled.txt", 'r') as fin:
 		b = json.load(fin)
+		listArr = []
+		
 		for canidate in b.keys():
 			print(canidate)
-			sum = 0;
+			sumarr = [];
+			
 			for entry in b[canidate]:
 				a = numpy.array(entry)
-				sum += a[1]
-			print(sum)
+				sumarr.append(a)
+			listArr.append(sumarr)
+		Scoring("Comstock Wexton Matrix.txt", listArr, result_list)
+		#print(sumarr)

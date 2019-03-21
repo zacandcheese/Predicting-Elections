@@ -31,22 +31,26 @@ def Sentiment(tweet):
 	return(negative, neutral, positive)
 	
 if __name__== '__main__':
+	import time
 	new_dict = {}
 	with open("Comstock Wexton tweets.txt", 'r') as fp:
 		collection_of_tweets = json.load(fp)
 		for date in collection_of_tweets.keys():
 			for tweet in collection_of_tweets[date]:
 				try:
-					#print((tweet[1]))
-					
-					#tweet.append(Sentiment(tweet[1])[0])
-					print(tweet)
+					time.sleep(5)
+					negative, neutral, positive = Sentiment(tweet[1])
+					tweet.append(negative)
+					tweet.append(neutral)
+					tweet.append(positive)
 					appendBoi = tweet
-					print("Hi: ", appendBoi)
+					print(tweet)
 					new_dict[date] = appendBoi
 				except IndexError:
+					print("INDEXERROR")
 					pass
 				except TypeError:
+					print("TYPEERROR")
 					pass
 					
 	print(new_dict)
