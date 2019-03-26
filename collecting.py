@@ -172,15 +172,13 @@ def Handle(name):
 	import json
 
 	url = []
-	for url2 in search("Twitter Representative " + name, stop=1):
+	for url2 in search("Twitter " + name, stop=1):
 		url.append(url2)
 	print(url[0].split(".com/",1)[1].split("?",1)[0])
-	if(name != "Wexton"):
-		return(url[0].split(".com/",1)[1].split("?",1)[0])
-	else:
-		return("jenniferwexton")
-		
+	return(url[0].split(".com/",1)[1].split("?",1)[0])
+
+	
 if __name__ == "__main__":
-	CollectPoll("Kaine_Stewart")
+	Handle("Jennifer Wexton")
 	
 
