@@ -13,7 +13,6 @@ determine elections based off of
 the two canidates social media trends
 """
 VERSION = '1.2'
-__author__ = 'Zachary Nowak, Ethan Saari'
 
 """STANDARD LIBRARY IMPORTS"""
 import json
@@ -76,7 +75,7 @@ def main():
 		collection_of_polls = collecting.CollectPoll(election_search)#collection_of_polls[date] = score name
 	
 	"""Iterate through the dates in the dict of polls and find the corresponding tweets from that week."""
-	if(os.path.isfile(election_search + " tweets.txt")):
+	if(not os.path.isfile(election_search + " tweets.txt")): #TEMPORARY
 		with open(election_search + " tweets.txt",'r') as fp:
 			collection_of_tweets = json.load(fp)
 
@@ -116,7 +115,7 @@ def main():
 	compDict = scoring.ConvertTweets(election_search + " tweets.txt")
 	for date in collection_of_tweets.keys():
 		for j in range(len(list_of_canidates)):
-			coordinates_of_tweets[date+chr(j+65)] = scoring.Scoring(collection_of_tweets, date)
+			scoring.Scoring(collection_of_tweets, date)
 	
 	"""FIXME"""
 	#Coordinates of polls needs to be tuned#

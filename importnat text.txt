@@ -64,3 +64,5 @@ C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python36_64
 sentiment that can run overnight
 fix/clean up code
 MATH
+
+NUMBER OF CANDIDATES
