@@ -146,11 +146,13 @@ def loadMatrix(name_of_file):
 		
 	
 def Scoring(name_of_file, list_of_collection_of_tweets, final_result):
-	n = 501
-	size = (len(list_of_collection_of_tweets[1][1]))	
-	matrix = scoringMatrix.scoringMatrixOverTime(num_of_factors = size, num_of_weights = 4, learning_rate = 0.1, method = doNothing)
+	n = 601
+	size = (len(list_of_collection_of_tweets[0][0]))#[][]
+	matrix = scoringMatrix.scoringMatrixOverTime(num_of_factors = size, num_of_weights = 2, learning_rate = 0.4, method = print)#CONSTRUCTOR
 	for i in range(n):
-		matrix.train(list_of_collection_of_tweets[i%2],final_result[i%2])
+		#matrix.train(list_of_collection_of_tweets[i%2],final_result[i%2], 50)
+		if(matrix.train(list_of_collection_of_tweets[0],final_result[0], 50)):
+			break
 		if(i%100 == 0):
 			print(i)
 						#upload matrix#
@@ -160,8 +162,7 @@ def Scoring(name_of_file, list_of_collection_of_tweets, final_result):
 
 	print(matrix.getMatrix())
 	
-	print("-----------",matrix.run(list_of_collection_of_tweets[0]))
-	print("-----------",matrix.run(list_of_collection_of_tweets[1]))
+	print("-----------",matrix.run(list_of_collection_of_tweets[0]),50)
 
 	
 if __name__ == '__main__':
@@ -176,7 +177,7 @@ if __name__ == '__main__':
 		result_list = []
 		final_result_a = 50-final_result/2
 		result_list.append(final_result_a)
-		final_result_b = 50+final_result
+		final_result_b = 50+final_result/2
 		result_list.append(final_result_b)
 
 	#dict = ConvertTweets(name_of_file)
@@ -192,5 +193,7 @@ if __name__ == '__main__':
 				a = numpy.array(entry)
 				sumarr.append(a)
 			listArr.append(sumarr)
-		Scoring("Comstock Wexton Matrix.txt", listArr, result_list)
+		
+			#Scoring("Comstock Wexton Matrix.txt", listArr, result_list)
+		Scoring("Comstock Matrix.txt", listArr, result_list)
 		#print(sumarr)

@@ -119,6 +119,9 @@ def GraphPolls(name_of_file):
 	
 def GraphCompiled(xArr1, yArr1, xArr2, yArr2):
 	#assume it is every day
+	plt.ylabel("Favorability Index")
+	plt.xlabel("Days")
+	plt.title("Canidate Favorability")
 	plt.plot(xArr1, yArr1, color='red')
 	plt.plot(xArr2, yArr2, color='blue')
 	plt.show()

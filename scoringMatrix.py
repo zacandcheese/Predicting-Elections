@@ -154,14 +154,17 @@ class scoringMatrixOverTime:
 		self.weights_in_hidden = np.random.rand(self.num_of_factors, self.num_of_weights)
 		self.weights_hidden_out = np.random.rand(self.num_of_weights, 1)
 		
-	def train(self, input_set, target_vector):#Changed input
+	def train(self, input_set, target_vector, start_value = 0):#Changed input
 		# input_vector and target_vector can be tuple, list or ndarray
 		output_vector2 = np.zeros(shape = (1,1))
-									#RUN THROUGH AND FIGURE OUT ERROR IF WE JUST INTIALLY RAN IT#
+		output_vector2[0,0] = start_value
+		
+							#RUN THROUGH AND FIGURE OUT ERROR IF WE JUST INTIALLY RAN IT#
 		#------------------------------------------------------------------------------------------------------#								
 		for input_vector in input_set:
 			input_vector = np.array(input_vector, ndmin=2)
 			target_vector = np.array(target_vector, ndmin=2)
+			
 			
 			#input 
 			output_vector1 = np.dot(input_vector, self.weights_in_hidden)
@@ -170,16 +173,14 @@ class scoringMatrixOverTime:
 			#output
 			output_vector2 += np.dot(output_vector_hidden, self.weights_hidden_out)
 		
-		
-		
 		#ERROR
 		output_errors = target_vector - output_vector2   
 		self.method("Output Vector: " + str(output_vector2))#Toggle print
 		time.sleep(1)
 		error = output_errors[0,0]
-		
+		if abs(error) < 3: return True
 		sign_of_error = 1 if error >= 0 else -1
-		sign_of_target = 1 if target_vector[0] >= 0 else -1
+		sign_of_target = 1 if target_vector[0] >= start_value else -1#FIXED changed to 50
 		sign_of_output = 1 if output_vector2[0] >= 0 else -1
 		
 		if(sign_of_output == sign_of_target):
@@ -219,10 +220,10 @@ class scoringMatrixOverTime:
 		
 		tmp = (np.dot(self.weights_in_hidden , identity_matrix)) #matrix that has been modified
 		self.weights_in_hidden = tmp
+		return False
 		
 		
-		
-	def run(self, input_set):#set
+	def run(self, input_set, start_value = 0):#set
 		"""output_vector = np.dot(input_vector, self.weights_in_hidden)
 		output_vector = np.dot(output_vector, self.weights_hidden_out)
 		return output_vector"""#OG
@@ -230,6 +231,7 @@ class scoringMatrixOverTime:
 		xlist = []
 		
 		output_vector2 = np.zeros(shape = (1,1))
+		output_vector2[0,0] = start_value
 		for input_vector in input_set:
 			input_vector = np.array(input_vector, ndmin=2)
 			
@@ -271,10 +273,11 @@ if __name__ == '__main__':
 			for entry in b[canidate]:
 				a = np.array(entry)
 				sumarr.append(a)
-				matrix = scoringMatrixOverTime(num_of_factors = 5, num_of_weights = 2, learning_rate = 0.1, method = print)
-			for i in range(200):
-				matrix.train(sumarr,-4)
+				matrix = scoringMatrixOverTime(num_of_factors = 5, num_of_weights = 2, learning_rate = 0.3, method = doNothing)
+			for i in range(300):
+				matrix.train(sumarr,1,50)
+				if(i%100 == 0):print(i)
 			
 			print(matrix.getMatrix())
-			print("-----------",matrix.run(sumarr))
+			print("-----------",matrix.run(sumarr, 50))
 	pass

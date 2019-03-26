@@ -13,6 +13,13 @@ import json, numpy
 arr1, arr2 = scoring.loadMatrix("Comstock Wexton Matrix.txt")
 matrix = scoringMatrix.scoringMatrixOverTime(in_matrix = arr1, out_matrix = arr2)
 
+
+arr1, arr2 = scoring.loadMatrix("Comstock Matrix.txt")
+matrixC = scoringMatrix.scoringMatrixOverTime(in_matrix = arr1, out_matrix = arr2)
+
+arr1, arr2 = scoring.loadMatrix("Wexton Matrix.txt")
+matrixW = scoringMatrix.scoringMatrixOverTime(in_matrix = arr1, out_matrix = arr2)
+
 name_of_file = "Comstock Wexton tweets.txt"
 with open(name_of_file + " compiled.txt", 'r') as fin:
 	b = json.load(fin)
@@ -26,15 +33,12 @@ with open(name_of_file + " compiled.txt", 'r') as fin:
 			a = numpy.array(entry)
 			sumarr.append(a)
 		listArr.append(sumarr)
-		
-		
-#print("-----------",matrix.run(listArr[0]))
-#print("-----------", matrix.run(listArr[1]))
+
 
 import graphing
 import operator
-matrix1, x1, y1 = matrix.run(listArr[0])
-matrix2, x2, y2 = matrix.run(listArr[1])
+matrix1, x1, y1 = matrixW.run(listArr[0],50)
+matrix2, x2, y2 = matrixW.run(listArr[1],50)
 #graphing.GraphCompiled(x1, y1, x2, y2 )
 #NEED TO CONVERT TO USE X1-X2 AND HAVE DATES
 
@@ -75,9 +79,14 @@ def Order(x1, y1):
 x1, y1 = Order(x1, y1)
 x2, y2 = Order(x2, y2)
 
+#y1 = [(i)*100/3 for i in y1]
+#y2 = [(i)*100/6 for i in y2]
+#print(y1,y2)
+
 y = [(a_i - b_i) for a_i, b_i in zip(y1, y2)] #CORRECT GRAPH OF DIFFERENCE PER DAY
 
 graphing.Graph(x1, y, "Dates", "Comstock v. Wexton")
+graphing.GraphCompiled(x1[1:], y1[1:], x2[1:], y2[1:] )
 y_1 = []
 y_2 = []
 last = 0
@@ -89,8 +98,8 @@ for i in range(len(y2)):
 	y_2.append(y2[i]+last)
 	last += y2[i]
 
-print(y_1)
-graphing.GraphCompiled(x1, y1, x2, y2 ) #CORRECT GRAPH OF DIFFERENCE OVER TIME
+print("graphing")
+graphing.GraphCompiled(x1, y_1, x2, y_2 ) #CORRECT GRAPH OF DIFFERENCE OVER TIME
 
 
 						#CORRECT GRAPH FOR PERCENTAGE OF PEOPLE
@@ -105,5 +114,5 @@ for i in range(len(y1)):
 	y_1.append(50+(difference/2)) #CANDIDATE 1
 	y_2.append(50-(difference/2)) #CANDIDATE 2
 
-graphing.GraphCompiled(x1, y_1, x2, y_2 ) #CORRECT GRAPH OF DIFFERENCE OVER TIME
+#graphing.GraphCompiled(x1, y_1, x2, y_2 ) #CORRECT GRAPH OF DIFFERENCE OVER TIME
 	
