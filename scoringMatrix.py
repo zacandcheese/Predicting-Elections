@@ -43,7 +43,7 @@ basically
 and that can be converted to a sum in the final step
 					
 """
-def doNothing(x):
+def doNothing(x = None, y = None):
 	pass
 	
 def sigmoid(x):
@@ -148,24 +148,27 @@ class scoringMatrixOverTime:
 		else:
 			self.weights_in_hidden = in_matrix
 			self.weights_hidden_out = out_matrix
-		
-		
+			
 	def create_weight_matrice(self):
 		self.weights_in_hidden = np.random.rand(self.num_of_factors, self.num_of_weights)
+		#for i in range(len(self.weights_in_hidden)):
+		#	if (i%2 == 0):
+		#		self.weights_in_hidden[i] *= -1
 		self.weights_hidden_out = np.random.rand(self.num_of_weights, 1)
-		
+	
 	def train(self, input_set, target_vector, start_value = 0):#Changed input
 		# input_vector and target_vector can be tuple, list or ndarray
 		output_vector2 = np.zeros(shape = (1,1))
 		output_vector2[0,0] = start_value
 		
+		temp_sum = 0#TEMP
 							#RUN THROUGH AND FIGURE OUT ERROR IF WE JUST INTIALLY RAN IT#
 		#------------------------------------------------------------------------------------------------------#								
 		for input_vector in input_set:
 			input_vector = np.array(input_vector, ndmin=2)
 			target_vector = np.array(target_vector, ndmin=2)
 			
-			
+			temp_sum += input_vector[0,4]#TEMP
 			#input 
 			output_vector1 = np.dot(input_vector, self.weights_in_hidden)
 			output_vector_hidden = output_vector1
@@ -174,47 +177,37 @@ class scoringMatrixOverTime:
 			output_vector2 += np.dot(output_vector_hidden, self.weights_hidden_out)
 		
 		#ERROR
+		
+		self.method("SUM", temp_sum)#TEMP
 		output_errors = target_vector - output_vector2   
 		self.method("Output Vector: " + str(output_vector2))#Toggle print
-		time.sleep(1)
+		#time.sleep(1)
 		error = output_errors[0,0]
-		if abs(error) < 3: return True
-		sign_of_error = 1 if error >= 0 else -1
-		sign_of_target = 1 if target_vector[0] >= start_value else -1#FIXED changed to 50
-		sign_of_output = 1 if output_vector2[0] >= 0 else -1
-		
-		if(sign_of_output == sign_of_target):
-			sign_of_comp = 1 #compatibility
-		else:
-			sign_of_comp = -1
-		
-		#Error should be large because it had compounded over time.
 
+		
 		
 														#PART 1#
 		#------------------------------------------------------------------------------------------------------#
-		coefficient_of_error = (1-(-1*sign_of_comp * ((sigmoid((error))-1/2)) * self.learning_rate))*sign_of_comp
+		coefficient_of_error = 1+((sigmoid((error))-1/2) * self.learning_rate) #First Derivative
 		
-		self.method("COE FIRST PASS: " + str(coefficient_of_error) + str(sigmoid((error))) + str(error))
+		self.method("COE FIRST PASS: " + str(coefficient_of_error) + " " + str(sigmoid((error)))+ " " + str(error))
 		
-		self.weights_hidden_out =  (coefficient_of_error) * self.weights_hidden_out
+		self.weights_hidden_out = (coefficient_of_error) * self.weights_hidden_out
 		
-		#print(self.weights_hidden_out)
+		
 		
 		
 														#PART 2#
 		#-------------------------------------------------------------------------------------------------------#
-		hidden_errors = np.dot(output_errors, self.weights_hidden_out.T) #returns [value1, value2, value3, ... valueN]
-
+		hidden_errors = np.dot(output_errors, self.weights_hidden_out.T) #returns [value1, value2, value3, ... valueN] in a list form
 		identity_matrix = np.zeros((self.num_of_weights,self.num_of_weights))
-		i = 0
 		
+		i = 0
 		for err in hidden_errors[0]:
-			sign_of_error = 1 if err >= 0 else -1
-			#coefficient_of_error = (1-sigmoid(err))*err*sign_of_error  #normalize it
-			coefficient_of_error = 1-(-1*sign_of_comp * ((sigmoid((err))-1/2)) * self.learning_rate)
+
+			coefficient_of_error = 1+(	((sigmoid(err) * (1-(sigmoid(err))))	- 1/4) * self.learning_rate) #Second Derivative
 			
-			self.method("HIDDEN ERROR "+str(i)+":"+ str(err)+str(coefficient_of_error))
+			self.method("HIDDEN ERROR "+ str(i) +":"+ str(err)+str(coefficient_of_error))
 			identity_matrix[i][i] = coefficient_of_error
 			i+=1
 		
@@ -248,6 +241,9 @@ class scoringMatrixOverTime:
 
 	def getMatrix(self):
 		return self.weights_in_hidden, self.weights_hidden_out
+
+
+
 		
 if __name__ == '__main__':
 	
@@ -264,20 +260,28 @@ if __name__ == '__main__':
 	#name_of_file = "Brat Spanberger tweets.txt"
 
 	#dict = ConvertTweets(name_of_file)
+	
+	matrix = scoringMatrixOverTime(num_of_factors = 5, num_of_weights = 3, learning_rate = 0.3, method = doNothing)#Changed
+	
 	with open(name_of_file + " compiled.txt", 'r') as fin:
 		b = json.load(fin)
-		for canidate in b.keys():
-			print(canidate)
+		big_list = []
+		for candidate in b.keys():
+			print(candidate)
 			sumarr = [];
 			
-			for entry in b[canidate]:
+			for entry in b[candidate]:
 				a = np.array(entry)
 				sumarr.append(a)
-				matrix = scoringMatrixOverTime(num_of_factors = 5, num_of_weights = 2, learning_rate = 0.3, method = doNothing)
-			for i in range(300):
-				matrix.train(sumarr,1,50)
-				if(i%100 == 0):print(i)
 			
-			print(matrix.getMatrix())
-			print("-----------",matrix.run(sumarr, 50))
+			big_list.append(sumarr)
+	
+	for i in range(3001):
+		result_list = [45,55]
+		matrix.train(big_list[i%2],result_list[i%2],0)
+		if(i%100 == 0):print(i)
+	
+	print(matrix.getMatrix())
+	print("-----------",matrix.run(big_list[0], 0))
+	print("-----------",matrix.run(big_list[1], 0))
 	pass

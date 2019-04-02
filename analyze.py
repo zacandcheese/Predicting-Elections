@@ -25,11 +25,11 @@ with open(name_of_file + " compiled.txt", 'r') as fin:
 	b = json.load(fin)
 	listArr = []
 	
-	for canidate in b.keys():
-		print(canidate)
+	for candidate in b.keys():
+		print(candidate)
 		sumarr = [];
 		
-		for entry in b[canidate]:
+		for entry in b[candidate]:
 			a = numpy.array(entry)
 			sumarr.append(a)
 		listArr.append(sumarr)

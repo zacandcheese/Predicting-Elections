@@ -139,7 +139,7 @@ def CollectPoll(election_search):
 			poll_dict['11/6'] = line[-2]+line[-1]
 		try:
 			if('/' in line[-10]): #Checks to see if that spot is a date
-				#Date, Name of Canidate in Favor, Score
+				#Date, Name of candidate in Favor, Score
 				print(line[-10] + " score: " + line[-2] + line[-1])
 				#Set the key to be the range of dates
 				poll_dict[line[-10]] = line[-2] + line[-1]
@@ -158,7 +158,7 @@ def CollectPoll(election_search):
 	#print(id.body)
 	
 												#dump the dictionary to a seperate file for future use#
-	with open(election_search + " poll.txt", 'w') as fout:
+	with open('DATA-POLL ' + election_search + '.txt', 'w') as fout:
 		json.dump(poll_dict, fout)
 		
 	assert "No results found." not in driver.page_source
@@ -175,10 +175,11 @@ def Handle(name):
 	for url2 in search("Twitter " + name, stop=1):
 		url.append(url2)
 	print(url[0].split(".com/",1)[1].split("?",1)[0])
+	
 	return(url[0].split(".com/",1)[1].split("?",1)[0])
 
 	
 if __name__ == "__main__":
-	Handle("Jennifer Wexton")
+	CollectPoll("Tim Kaine Corey Stewart")
 	
 

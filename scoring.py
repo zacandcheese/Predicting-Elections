@@ -31,16 +31,16 @@ def ConvertTweets(name_of_file):
 	with open(name_of_file, 'r') as fp:
 		collection_of_tweets = json.load(fp)
 	compiled = {}
-	for canidate in collection_of_tweets.keys():
+	for candidate in collection_of_tweets.keys():
 		try:
-			currentDay = collection_of_tweets[canidate][0][0]
+			currentDay = collection_of_tweets[candidate][0][0]
 		except IndexError:
 			currentDay = "1 Nov 2018"
 		listPerDay = []
 		listDayBefore = [0,0,0,0,0]
 		listOfSummaries = []
-		print(canidate)#, currentDay, listPerDay, listDayBefore)
-		for tweet in collection_of_tweets[canidate]:
+		print(candidate)#, currentDay, listPerDay, listDayBefore)
+		for tweet in collection_of_tweets[candidate]:
 			#print(tweet)
 			try:
 				if(tweet[0] == currentDay): #Is the tweet on the same day
@@ -115,8 +115,8 @@ def ConvertTweets(name_of_file):
 			except IndexError:
 				pass
 		
-		print("FINISHED A CANIDATE")
-		compiled[canidate] = listOfSummaries
+		print("FINISHED A candidate")
+		compiled[candidate] = listOfSummaries
 		listPerDay.clear()
 		listDayBefore.clear()
 		#Dont clear a list you eventually want to return it destroys the memory idiot.
@@ -185,11 +185,11 @@ if __name__ == '__main__':
 		b = json.load(fin)
 		listArr = []
 		
-		for canidate in b.keys():
-			print(canidate)
+		for candidate in b.keys():
+			print(candidate)
 			sumarr = [];
 			
-			for entry in b[canidate]:
+			for entry in b[candidate]:
 				a = numpy.array(entry)
 				sumarr.append(a)
 			listArr.append(sumarr)

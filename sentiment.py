@@ -11,7 +11,7 @@ Date: 01/03/2019
 Program Description: Analyze the given
 data for sentiment and return value
 
-canidate, date, tweet, likes, replies, sentiment
+candidate, date, tweet, likes, replies, sentiment
 """
 from paralleldots import set_api_key, similarity, ner, taxonomy, sentiment, keywords, intent, emotion, abuse
 import json
