@@ -123,6 +123,7 @@ MyScreenManager:
             size_hint_y: 0.20
             pos_hint: {'x': 0.30, 'y': 0.15}
             on_release:
+                print(root.textConvert(self))
                 MAIN.main(root.textConvert(self))
 <COLLECTIONPAGE>:
     FloatLayout:

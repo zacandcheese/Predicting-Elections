@@ -128,4 +128,4 @@ def main():
 	
 if __name__ == '__main__':
 	import testingTheGui
-	testingTheGui.MAINApp(print).run()
+	testingTheGui.MAINApp().run()
