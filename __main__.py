@@ -127,5 +127,6 @@ def main():
 	graphing.Graph(coordinates_of_polls, coordinates_of_tweets)
 	
 if __name__ == '__main__':
-	import testingTheGui
-	testingTheGui.MAINApp().run()
+	main()
+	#import testingTheGui
+	#testingTheGui.MAINApp().run()

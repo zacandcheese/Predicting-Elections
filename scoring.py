@@ -180,8 +180,8 @@ if __name__ == '__main__':
 		final_result_b = 50+final_result/2
 		result_list.append(final_result_b)
 
-	#dict = ConvertTweets(name_of_file)
-	with open(name_of_file + " compiled.txt", 'r') as fin:
+	dict = ConvertTweets(name_of_file)
+	"""with open(name_of_file + " compiled.txt", 'r') as fin:
 		b = json.load(fin)
 		listArr = []
 		
@@ -196,4 +196,4 @@ if __name__ == '__main__':
 		
 			#Scoring("Comstock Wexton Matrix.txt", listArr, result_list)
 		Scoring("Comstock Matrix.txt", listArr, result_list)
-		#print(sumarr)
+		#print(sumarr)"""
