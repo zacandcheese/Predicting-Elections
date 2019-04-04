@@ -14,6 +14,8 @@ from kivy.uix.textinput import TextInput
 from kivy.lang import Builder
 from kivy.properties import StringProperty
 from kivy.core.window import Window
+from kivy.properties import ObjectProperty
+
 
 kv_str = """
 #:import MAIN MAIN
@@ -105,16 +107,19 @@ MyScreenManager:
                 root.manager.current = 'final_screen'
                 root.manager.ids.final.previous = root.name
         TextInput:
+            focus: True
+            unfocus_on_touch: False
             id: txt1
-            text: ""
             hint_text: 'Input Candidates First and Last Names'
             size_hint_x: 0.75
             size_hint_y: None
             pos_hint: {'x': 0.125, 'y': 0.40}
-            multiline: True
+            multiline: False
             font_size: 35
             on_quad_touch:
                 root.manager.current = 'secretMain'
+            on_text_validate:
+                MAIN.main(root.textConvert(self))
         Button:
             text: 'FIND'
             color: 1.0, 0.6, 0.0, 1
@@ -123,7 +128,6 @@ MyScreenManager:
             size_hint_y: 0.20
             pos_hint: {'x': 0.30, 'y': 0.15}
             on_release:
-                print(root.textConvert(self))
                 MAIN.main(root.textConvert(self))
 <COLLECTIONPAGE>:
     FloatLayout:
