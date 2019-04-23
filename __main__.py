@@ -21,6 +21,7 @@ import os
 import sys
 import datetime
 from datetime import timedelta
+import numpy
 
 """LOCAL LIBRARY IMPORTS"""
 import collecting
@@ -105,28 +106,35 @@ def main():
 			
 											#Collecting Tweets#
 	#-----------------------------------------------------------------------------------------------#
-		i = 65 #ASCII for the letter A
+		#ASCII for the letter A
 		for candidate in list_of_candidates:
-			collection_of_tweets[(str(end)+chr(i))] = collecting.Collect(candidates_handle[candidate], start, end)
-			i += 1
+			collection_of_tweets[str(candidate)] = collecting.Collect(candidates_handle[candidate], start, end)
 
 		with open('DATA-TWEETS ' + election_search + '.txt', 'w') as outfile:
-			#with open(os.path.join(sys.path[0],"tweets"), 'w') as outfile:
 			json.dump(collection_of_tweets, outfile)
 
 											#Scoring Everything#
 	#-----------------------------------------------------------------------------------------------#
 	compDict = scoring.ConvertTweets('DATA-TWEETS ' + election_search + '.txt')
-	for date in collection_of_tweets.keys():
-		for j in range(len(list_of_candidates)):
-			scoring.Scoring(collection_of_tweets, date)
+	
+	print(collection_of_polls['11/6'])
+	results = scoring.GetResults(list_of_candidates, collection_of_polls['11/6'])
+	print(results)
+	listArr = [];
+	for candidate in collection_of_tweets.keys():
+		sumarr = [];
+		for entry in compDict[candidate]:
+			a = numpy.array(entry)
+			sumarr.append(a)
+		listArr.append(sumarr)
+	
+	final_resultsA, final_resultsB = scoring.Scoring("BLANK_FILE.txt", listArr, results)
+	print("RESULTS: " , final_resultsA[2])
 	
 												#Graphing#
 	#------------------------------------------------------------------------------------------------#
-	graphing.MakeGraphs(collection_of_tweets)
-	graphing.Graph(coordinates_of_polls, coordinates_of_tweets)
+	graphing.MakeGraphs('DATA-TWEETS ' + election_search + '.txt')
+	graphing.Graph(final_resultsA[2],final_resultsB[2],"time", "Comparing")
 	
 if __name__ == '__main__':
 	main()
-	#import testingTheGui
-	#testingTheGui.MAINApp().run()

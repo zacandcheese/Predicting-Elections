@@ -30,7 +30,7 @@ def value_to_float(x):
 		if len(x) > 1:
 			return float(x.replace('M', '')) * 1000000
 		return 1000000.0
-	if 'Like' in x:
+	if 'Like' in x or 'Retweet' in x:
 		return 10
 	else:
 		return float(x)
@@ -46,6 +46,9 @@ def MakeGraphs(name_of_file):
 	x_axis_B = []
 	y_axis_B = []
 	
+	candidate = name_of_file.split(" ")
+	A_name = candidate[-2]+" "+candidate[-1].split(".")[0]
+	B_name = candidate[-4]+" "+candidate[-3]
 	for date in collection_of_tweets.keys():
 		stuff = collection_of_tweets[date]
 		for tweet in stuff:
@@ -57,7 +60,7 @@ def MakeGraphs(name_of_file):
 				new_date = datetime.date(year, month, day)
 				
 				num_of_like = value_to_float(tweet[3])
-				if(date[-1] == 'A'):
+				if(date == A_name):
 					y_axis_A.append(float(num_of_like))
 					x_axis_A.append(new_date)
 				else:
@@ -69,18 +72,19 @@ def MakeGraphs(name_of_file):
 				
 	plt.ylabel('Number of Retweets')
 	plt.title('Number of Retweets Per Tweet')
-	plt.plot_date(x_axis_A, y_axis_A, 'ro', xdate = True, label = "Comstock")
-	plt.plot_date(x_axis_B,y_axis_B, 'bo', xdate = True, label = "Wexton")
+	plt.plot_date(x_axis_A, y_axis_A, 'ro', xdate = True, label = A_name)
+	plt.plot_date(x_axis_B,y_axis_B, 'bo', xdate = True, label = B_name)
 	plt.legend()
 	plt.gcf().autofmt_xdate()
 	plt.show()
 	
 def Graph(xdata, ydata, xname, title):
-	plt.plot(xdata, ydata, color='blue')
-	plt.plot(xdata, [0]*len(xdata), color='black')
-	plt.ylabel("Change %")
+	plt.plot(range(len(xdata)),xdata , color='blue')
+	plt.plot(range(len(ydata)), (ydata), color='red')
+	plt.ylabel("Percent Favorability")
 	plt.xlabel(xname)
 	plt.title(title)
+	plt.legend()
 	plt.show()
 	return None;
 
@@ -127,5 +131,5 @@ def GraphCompiled(xArr1, yArr1, xArr2, yArr2):
 	plt.show()
 	
 if __name__=="__main__":
-	#MakeGraphs("Comstock Wexton tweets.txt")
-	GraphPolls("Comstock Wexton poll.txt")
+	MakeGraphs("DATA-TWEETS David Brat Abigail Spanberger.txt")
+	#GraphPolls("Comstock Wexton poll.txt")
