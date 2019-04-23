@@ -1,8 +1,9 @@
 #cmd /K "$(FULL_CURRENT_PATH)"
 #https://kivy.org/doc/stable/tutorials/pong.html
 from kivy.config import Config
+Config.set('graphics','window_state','maximized')
 Config.set('kivy','window_icon','C:/Users/nogos/Documents/GitHub/Predicting-Elections/firstphotothingy_MtD_icon.ico')
-Config.set('kivy', 'exit_on_escape', '0')
+Config.set('kivy','exit_on_escape','0')
 
 from kivy.app import App
 from kivy.uix.screenmanager import Screen, ScreenManager
@@ -14,15 +15,19 @@ from kivy.uix.textinput import TextInput
 from kivy.lang import Builder
 from kivy.properties import StringProperty
 from kivy.core.window import Window
+from kivy.properties import ObjectProperty
+from kivy.config import Config
 
 kv_str = """
 #:import MAIN MAIN
 #:import main MAIN
+#:import collecting collecting
+#:import Collect collecting
+#:import scoring scoring
+#:import Scoring scoring
 #:import TextInput kivy.uix.textinput
 
 MyScreenManager:
-    WELCOME:
-        name: 'welcome'
     BRANCH:
         name: 'branch'
     MAINPAGE:
@@ -33,184 +38,138 @@ MyScreenManager:
         name: 'scorePage'
     FINAL_SCREEN:
         name: 'final_screen'
-    SECRET_PAGE:
-        name: 'secretMain'
-<WELCOME>
+
+<BRANCH>
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "Background.jpg"
     FloatLayout:
-        Image:
-            source: "FirstPhotoThingy.png"
         Label:
-            pos_hint: {'x': 0.00, 'y': 0.20}
-            font_size: 90
-            text: 'Welcome'
+            pos_hint: {'x': 0.00, 'y': 0.35}
+            font_size: 75
+            text: 'Election Prediction and Analysis'
             color: 0, 0, 0, 1
         Button:
-            text: 'Click to Continue.'
-            color: 1.0, 0.6, 0.0, 1
+            id: btn
+            text: 'Run Main Program'
             font_size: 30
-            size_hint_x: 0.50
-            size_hint_y: 0.25
-            pos_hint: {'x': 0.25, 'y': 0.25}
+            pos_hint: {'x': 0.25, 'y': 0.5}
+            color: 1, 1, 1, 1
+            size_hint_x: 0.5
+            size_hint_y: 0.2
             on_release:
-                root.manager.transition.direction = 'left'
-                root.manager.current = 'branch'
-<BRANCH>
-    FloatLayout:
-    Button:
-        text: 'Run Main Project'
-        color: 1.0, 0.6, 0.0, 1
-        font_size: 30
-        size_hint_x: 0.50
-        size_hint_y: 0.25
-        pos_hint: {'x': 0.25, 'y': 0.75}
-        on_release:
-            root.manager.transition.direction = 'left'
-            root.manager.current = 'mainPage'
-    Button:
-        text: 'Run Collection'
-        color: 1.0, 0.6, 0.0, 1
-        font_size: 30
-        size_hint_x: 0.50
-        size_hint_y: 0.25
-        pos_hint: {'x': 0.25, 'y': 0.375}
-        on_release:
-            root.manager.transition.direction = 'left'
-            root.manager.current = 'collectPage'
-    Button:
-        text: 'Run Scoring'
-        color: 1.0, 0.6, 0.0, 1
-        font_size: 30
-        size_hint_x: 0.50
-        size_hint_y: 0.25
-        pos_hint: {'x': 0.25, 'y': 0.0}
-        on_release:
-            root.manager.transition.direction = 'left'
-            root.manager.current = 'scorePage'
+                root.manager.current = 'mainPage'
+        Button:
+            text: 'Run Collection Program'
+            color: 1, 1, 1, 1
+            font_size: 30
+            pos_hint: {'x': 0.25, 'y': 0.3}
+            size_hint_x: 0.5
+            size_hint_y: 0.2
+            on_release:
+                root.manager.current = 'collectPage'
+        Button:
+            text: 'Run Scoring Program'
+            color: 1, 1, 1, 1
+            font_size: 30
+            size_hint_x: 0.5
+            size_hint_y: 0.2
+            pos_hint: {'x': 0.25, 'y': 0.1}
+            on_release:
+                root.manager.current = 'scorePage'
+
 <MAINPAGE>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "Background.jpg"
     FloatLayout:
         Label:
-            pos_hint: {'x': 0.00, 'y': 0.20}
-            font_size: 35
-            text: 'this is SCREEN-1'
+            pos_hint: {'x': 0.00, 'y': 0.35}
+            font_size: 75
+            text: 'Main Program'
+            color: 0, 0, 0, 1
+        Button:
+            text: 'Run the Program'
             color: 1, 1, 1, 1
+            font_size: 30
+            size_hint_x: 0.35
+            size_hint_y: 0.15
+            pos_hint: {'x': 0.125, 'y': 0.15}
+            on_release:
+                MAIN.main(root.textConvert(self))
         Button:
             text: 'Forward'
-            color: 1.0, 0.6, 0.0, 1
-            font_size: 20
-            size_hint_x: 0.20
-            size_hint_y: 0.20
-            pos_hint: {'x': 0.50, 'y': 0.15}
+            color: 1, 1, 1, 1
+            font_size: 30
+            size_hint_x: 0.35
+            size_hint_y: 0.15
+            pos_hint: {'x': 0.525, 'y': 0.15}
             on_release:
-                root.manager.transition.direction = 'left'
                 root.manager.current = 'final_screen'
                 root.manager.ids.final.previous = root.name
         TextInput:
+            focus: True
+            unfocus_on_touch: False
             id: txt1
-            text: ""
             hint_text: 'Input Candidates First and Last Names'
             size_hint_x: 0.75
-            size_hint_y: None
-            pos_hint: {'x': 0.125, 'y': 0.40}
+            size_hint_y: 0.30
+            pos_hint: {'x': 0.125, 'y': 0.35}
             multiline: True
             font_size: 35
-            on_quad_touch:
-                root.manager.current = 'secretMain'
-        Button:
-            text: 'FIND'
-            color: 1.0, 0.6, 0.0, 1
-            font_size: 20
-            size_hint_x: 0.20
-            size_hint_y: 0.20
-            pos_hint: {'x': 0.30, 'y': 0.15}
-            on_release:
-                print(root.textConvert(self))
+            on_text_validate:
                 MAIN.main(root.textConvert(self))
+
 <COLLECTIONPAGE>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "Background.jpg"
     FloatLayout:
         Label:
             pos_hint: {'x': 0.00, 'y': 0.20}
-            font_size: 35
-            text: 'me este SCREEN-2'
-            color: 1, 1, 1, 1
+            font_size: 75
+            text: 'Collection Program'
+            color: 0, 0, 0, 1
         Button:
-            text: 'Onward'
-            color: 1.0, 0.6, 0.0, 1
-            font_size: 20
-            size_hint_x: 0.20
-            size_hint_y: 0.20
-            pos_hint: {'x': 0.40, 'y': 0.15}
+            text: 'Collect the Data'
+            color: 1, 1, 1, 1
+            font_size: 30
+            size_hint_x: 0.35
+            size_hint_y: 0.15
+            pos_hint: {'x': 0.325, 'y': 0.35}
             on_release:
-                root.manager.transition.direction = 'left'
-                root.manager.current = 'final_screen'
-                root.manager.ids.final.previous = root.name
+                collecting.Collect()
+
 <SCORINGPAGE>:
+    canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: "Background.jpg"
     FloatLayout:
         Label:
             pos_hint: {'x': 0.00, 'y': 0.20}
-            font_size: 35
-            text: 'something SCREEN-3'
+            font_size: 75
+            text: 'Scoring Program'
+            color: 0, 0, 0, 1
+        Button:
+            text: 'Score an Election'
             color: 1, 1, 1, 1
-        Button:
-            text: 'Lets Go'
-            color: 1.0, 0.6, 0.0, 1
-            font_size: 20
-            size_hint_x: 0.20
-            size_hint_y: 0.20
-            pos_hint: {'x': 0.40, 'y': 0.15}
+            font_size: 30
+            size_hint_x: 0.35
+            size_hint_y: 0.15
+            pos_hint: {'x': 0.325, 'y': 0.35}
             on_release:
-                root.manager.transition.direction = 'left'
-                root.manager.current = 'final_screen'
-                root.manager.ids.final.previous = root.name
-<FINAL_SCREEN>:
-    FloatLayout:
-        Label:
-            pos_hint: {'x': 0.00, 'y': 0.20}
-            font_size: 35
-            text: 'Final Screen'
-            color: 1, 1, 1, 1
-        Button:
-            text: 'Back'
-            color: 1.0, 0.6, 0.0, 1
-            font_size: 20
-            size_hint_x: 0.20
-            size_hint_y: 0.20
-            pos_hint: {'x': 0.60, 'y': 0.15}
-            on_release:
-                root.manager.transition.direction = 'right'
-                root.manager.current = root.previous
-        Button:
-            text: 'Restart'
-            color: 1.0, 0.6, 0.0, 1
-            font_size: 20
-            size_hint_x: 0.20
-            size_hint_y: 0.20
-            pos_hint: {'x': 0.20, 'y': 0.15}
-            on_release:
-                root.manager.transition.direction = 'right'
-                root.manager.current = 'branch'
-<SECRET_PAGE>:
-    FloatLayout:
-        Label:
-            pos_hint: {'x': 0.00, 'y': 0.20}
-            font_size: 35
-            text: 'WELCOME TO THE SECRET PAGE'
-            color: 1, 1, 1, 1
-        Button:
-            text: 'Onward'
-            color: 1.0, 0.6, 0.0, 1
-            font_size: 20
-            size_hint_x: 0.20
-            size_hint_y: 0.20
-            pos_hint: {'x': 0.40, 'y': 0.15}
-            on_release:
-                root.manager.transition.direction = 'left'
-                root.manager.current = 'final_screen'
+                scoring.Scoring()
 """
 
 class MyScreenManager(ScreenManager):
-    pass
-
-class WELCOME(Screen):
     pass
 
 class BRANCH(Screen):
@@ -229,13 +188,10 @@ class SCORINGPAGE(Screen):
 class FINAL_SCREEN(Screen):
     pass
 
-class SECRET_PAGE(Screen):
-    pass
-
 class MAINApp(App):
     def build(self):
         self.title = 'Election Prediction'
-        self.icon = 'FirstPhotoThingy.png'
+        self.icon = 'Logo.jpg'
         Window.bind(on_request_close = self.on_request_close)
         return Builder.load_string(kv_str)
     
