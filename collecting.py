@@ -11,14 +11,23 @@ Date: 01/03/2019
 Program Description: Returns a set of all tweets
 from handle for a certain time stamp
 """
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+from time import sleep
+import datetime
+from googlesearch import search
+import json
+
+#So we don't see the window
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+
 def Collect(user, start, end):
 	#https://github.com/bpb27/twitter_scraping/blob/master/scrape.py
-	from selenium import webdriver
-	from selenium.webdriver.common.keys import Keys
-	from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
-	from time import sleep
-	import json
-	import datetime
+
 
 	"""
 	# edit these three variables
@@ -29,6 +38,7 @@ def Collect(user, start, end):
 	
 	# only edit these if you're having problems
 	delay = 1  # time to wait on each page load before reading the page
+	#driver = webdriver.Chrome(chrome_options=chrome_options)  # options are Chrome() Firefox() Safari()
 	driver = webdriver.Chrome()  # options are Chrome() Firefox() Safari()
 
 	#main list is made up of date lists
@@ -111,10 +121,6 @@ def Collect(user, start, end):
 	return main_list
 	
 def CollectPoll(election_search):
-	from selenium import webdriver
-	from selenium.webdriver.common.by import By
-	from googlesearch import search
-	import json
 												#search for the poll html file#
 	url = []
 	for url2 in search('Poll Data ' + election_search, stop=1):
@@ -123,7 +129,7 @@ def CollectPoll(election_search):
 	html_file = url[0]	
 
 										   #get the html file and search for the poll#
-	driver = webdriver.Chrome()
+	driver = webdriver.Chrome(chrome_options=chrome_options)
 	driver.get(html_file)
 													   #get the poll data#
 	xpath = ("/html/body[@class='polls']/div[@id='container']/div[@class='alpha-container ']/div[@class='alpha']/div[@id='polling-data-full']/table[@class='data large ']/tbody")
@@ -180,6 +186,10 @@ def Handle(name):
 
 	
 if __name__ == "__main__":
-	CollectPoll("Tim Kaine Corey Stewart")
+	import datetime
+	user = 'realdonaldtrump'
+	start = datetime.datetime(2018, 2, 10)  # year, month, day
+	end = datetime.datetime(2018, 12, 7)  # year, month, day
+	Collect(user,start,end)
 	
 
