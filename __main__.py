@@ -36,12 +36,14 @@ def main():
 												#INTRO#
 	#------------------------------------------------------------------------------------------------#
 	#The convention is alphbetical#
-	if(platform.system() == "Darwin"):#MAC
-		election_search = raw_input("What election: ")#The two last names of the candidates i.e. Comstock Wexton
-   
-	if(platform.system() == "Windows"):#WINDOWS
-		election_search = input("What election: ")#The two last names of the candidates i.e. Comstock Wexton
-		
+	if(election_search == None):
+		if(platform.system() == "Darwin"):#MAC
+			election_search = raw_input("What election: ")#The two last names of the canidates i.e. Comstock Wexton
+	   
+		if(platform.system() == "Windows"):#WINDOWS
+			election_search = input("What election: ")#The two last names of the canidates i.e. Comstock Wexton
+	else:
+		pass
 	"""
 	collection_of_tweets follows this file format
 	candidate, date, tweet, likes, replies, sentitment
