@@ -23,7 +23,32 @@ import json
 
 #So we don't see the window
 chrome_options = Options()
-chrome_options.add_argument("--headless")
+chrome_options.add_argument("--headless")#RUNNNING HEADER
+
+def getResponses(driver, user, id):
+	#Form url
+	url = 'https://twitter.com/'+user+'/status/'+str(id)
+	driver.get(url)
+	sleep(1)
+	print("----------------looking for Comments-----------------")
+	
+	#tweet = driver.find_element_by_css_selector('li.js-stream-item')
+	comments = driver.find_elements_by_xpath("//div[@class='stream']/ol[@id='stream-items-id']")
+	#comments = driver.find_elements_by_xpath("//div[@class='replies-to  permalink-inner permalink-replies']")
+	
+	print("---------Comment---------")
+
+	for comment in comments:
+		tweet_body = comment.find_element_by_css_selector("p.TweetTextSize").text
+		likes = comment.find_element_by_css_selector("div[class = 'ProfileTweet-action ProfileTweet-action--favorite js-toggleState'").text#like button
+		sleep(1)
+		if 'Like' in likes:
+			likes = likes.split(" ")[-1]
+			likes = likes.split('\n')[-1]
+		print(tweet_body, likes)
+	sleep(1)
+	
+	pass
 
 def Collect(user, start, end):
 	#https://github.com/bpb27/twitter_scraping/blob/master/scrape.py
@@ -90,6 +115,11 @@ def Collect(user, start, end):
 
 			#print('{} tweets found, {} total'.format(len(found_tweets), len(ids)))
 
+
+			id_list = []
+			date_list_temp = []
+			
+			
 			for tweet in found_tweets:
 				try:
 					id = tweet.find_element_by_css_selector(id_selector).get_attribute('href').split('/')[-1]
@@ -97,19 +127,31 @@ def Collect(user, start, end):
 					tweet_body = tweet.find_element_by_css_selector("p.TweetTextSize").text#WORKS YAYYYY!
 					likes = tweet.find_element_by_css_selector("div[class = 'ProfileTweet-action ProfileTweet-action--favorite js-toggleState'").text#like button
 					retweets = tweet.find_element_by_css_selector("div[class = 'ProfileTweet-action ProfileTweet-action--retweet js-toggleState js-toggleRt'").text#Retweet button
-					
+
 					print("USUALY A DATE: " + date)
 					print("TWEET: " + tweet_body)
 					print("LIKES: "+ likes.replace("Like\n",""))
 					print("RETWEETS: "+ retweets.replace("Retweet\n",""))
 					
-					date_list = [date,tweet_body,likes.replace("Like\n",""),retweets.replace("Retweet\n","")]
-					main_list.append(date_list)
+					#For Getting Comments
+					id_list.append(id)
 					
+					
+					date_list = [date,tweet_body,likes.replace("Like\n",""),retweets.replace("Retweet\n","")]
+					#main_list.append(date_list)
+					date_list_temp.append(date_list)
 					
 				except StaleElementReferenceException as e:
 					print('lost element reference', tweet)
-
+			
+			
+			#Getting Comments
+			i = 0
+			for date_list in date_list_temp:
+				id = id_list[i]
+				getResponses(driver,user,id)
+				i+=1
+			
 		except NoSuchElementException:
 			pass
 

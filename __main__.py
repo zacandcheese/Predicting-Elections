@@ -32,7 +32,7 @@ import graphing
 
 
 """MAIN"""
-def main():
+def main(election_search = None):
 												#INTRO#
 	#------------------------------------------------------------------------------------------------#
 	#The convention is alphbetical#
