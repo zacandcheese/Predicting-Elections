@@ -38,8 +38,8 @@ def Collect(user, start, end):
 	
 	# only edit these if you're having problems
 	delay = 1  # time to wait on each page load before reading the page
-	#driver = webdriver.Chrome(chrome_options=chrome_options)  # options are Chrome() Firefox() Safari()
-	driver = webdriver.Chrome()  # options are Chrome() Firefox() Safari()
+	driver = webdriver.Chrome(chrome_options=chrome_options)  # options are Chrome() Firefox() Safari()
+	#driver = webdriver.Chrome()  # options are Chrome() Firefox() Safari()
 
 	#main list is made up of date lists
 	main_list = []

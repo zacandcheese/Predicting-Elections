@@ -26,20 +26,22 @@ kv_str = """
 #:import scoring scoring
 #:import Scoring scoring
 #:import TextInput kivy.uix.textinput
+#:import ProgressBar kivy.uix.progressbar
 
 MyScreenManager:
     BRANCH:
         name: 'branch'
+    LOAD:
+        name: 'load'
     MAINPAGE:
         name: 'mainPage'
     COLLECTIONPAGE:
         name: 'collectPage'
     SCORINGPAGE:
         name: 'scorePage'
-    FINAL_SCREEN:
-        name: 'final_screen'
 
 <BRANCH>
+    id: 'branch'
     canvas.before:
         Rectangle:
             pos: self.pos
@@ -60,6 +62,7 @@ MyScreenManager:
             size_hint_x: 0.5
             size_hint_y: 0.2
             on_release:
+                root.manager.transition.direction = 'left'
                 root.manager.current = 'mainPage'
         Button:
             text: 'Run Collection Program'
@@ -69,6 +72,7 @@ MyScreenManager:
             size_hint_x: 0.5
             size_hint_y: 0.2
             on_release:
+                root.manager.transition.direction = 'left'
                 root.manager.current = 'collectPage'
         Button:
             text: 'Run Scoring Program'
@@ -78,7 +82,17 @@ MyScreenManager:
             size_hint_y: 0.2
             pos_hint: {'x': 0.25, 'y': 0.1}
             on_release:
+                root.manager.transition.direction = 'left'
                 root.manager.current = 'scorePage'
+<LOAD>:
+    size_hint: .5, .5
+    auto_dismiss: False
+    title: 'Downloading'
+    BoxLayout:
+        pos_hint: {'x': 0.45, 'y': 0.5}
+        ProgressBar:
+            value: 50
+            max: 100
 
 <MAINPAGE>:
     canvas.before:
@@ -102,15 +116,15 @@ MyScreenManager:
             on_release:
                 MAIN.main(root.textConvert(self))
         Button:
-            text: 'Forward'
+            text: 'Back'
             color: 1, 1, 1, 1
             font_size: 30
             size_hint_x: 0.35
             size_hint_y: 0.15
             pos_hint: {'x': 0.525, 'y': 0.15}
             on_release:
-                root.manager.current = 'final_screen'
-                root.manager.ids.final.previous = root.name
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'load'
         TextInput:
             focus: True
             unfocus_on_touch: False
@@ -132,19 +146,41 @@ MyScreenManager:
             source: "Background.jpg"
     FloatLayout:
         Label:
-            pos_hint: {'x': 0.00, 'y': 0.20}
+            pos_hint: {'x': 0.00, 'y': 0.35}
             font_size: 75
-            text: 'Collection Program'
+            text: 'Collection'
             color: 0, 0, 0, 1
         Button:
-            text: 'Collect the Data'
+            text: 'Run the Program'
             color: 1, 1, 1, 1
             font_size: 30
             size_hint_x: 0.35
             size_hint_y: 0.15
-            pos_hint: {'x': 0.325, 'y': 0.35}
+            pos_hint: {'x': 0.125, 'y': 0.15}
             on_release:
-                collecting.Collect()
+                (root.textConvert(self))
+        Button:
+            text: 'Back'
+            color: 1, 1, 1, 1
+            font_size: 30
+            size_hint_x: 0.35
+            size_hint_y: 0.15
+            pos_hint: {'x': 0.525, 'y': 0.15}
+            on_release:
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'branch'
+        TextInput:
+            focus: True
+            unfocus_on_touch: False
+            id: txt1
+            hint_text: 'Input Candidates First and Last Names'
+            size_hint_x: 0.75
+            size_hint_y: 0.30
+            pos_hint: {'x': 0.125, 'y': 0.35}
+            multiline: True
+            font_size: 35
+            on_text_validate:
+                collecting.Collect(root.textConvert(self))
 
 <SCORINGPAGE>:
     canvas.before:
@@ -154,19 +190,41 @@ MyScreenManager:
             source: "Background.jpg"
     FloatLayout:
         Label:
-            pos_hint: {'x': 0.00, 'y': 0.20}
+            pos_hint: {'x': 0.00, 'y': 0.35}
             font_size: 75
-            text: 'Scoring Program'
+            text: 'Scoring'
             color: 0, 0, 0, 1
         Button:
-            text: 'Score an Election'
+            text: 'Run the Program'
             color: 1, 1, 1, 1
             font_size: 30
             size_hint_x: 0.35
             size_hint_y: 0.15
-            pos_hint: {'x': 0.325, 'y': 0.35}
+            pos_hint: {'x': 0.125, 'y': 0.15}
             on_release:
-                scoring.Scoring()
+                (root.textConvert(self))
+        Button:
+            text: 'Back'
+            color: 1, 1, 1, 1
+            font_size: 30
+            size_hint_x: 0.35
+            size_hint_y: 0.15
+            pos_hint: {'x': 0.525, 'y': 0.15}
+            on_release:
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'branch'
+        TextInput:
+            focus: True
+            unfocus_on_touch: False
+            id: txt1
+            hint_text: 'Input Candidates First and Last Names'
+            size_hint_x: 0.75
+            size_hint_y: 0.30
+            pos_hint: {'x': 0.125, 'y': 0.35}
+            multiline: True
+            font_size: 35
+            on_text_validate:
+                scoring.Scoring(root.textConvert(self))
 """
 
 class MyScreenManager(ScreenManager):
@@ -174,6 +232,9 @@ class MyScreenManager(ScreenManager):
 
 class BRANCH(Screen):
     pass
+
+class LOAD(Screen):
+    pass\
 
 class MAINPAGE(Screen):
     def textConvert(self,btn):
@@ -185,13 +246,10 @@ class COLLECTIONPAGE(Screen):
 class SCORINGPAGE(Screen):
     pass
 
-class FINAL_SCREEN(Screen):
-    pass
-
 class MAINApp(App):
     def build(self):
         self.title = 'Election Prediction'
-        self.icon = 'Logo.jpg'
+        self.icon = 'Icon.png'
         Window.bind(on_request_close = self.on_request_close)
         return Builder.load_string(kv_str)
     
