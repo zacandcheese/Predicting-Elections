@@ -48,10 +48,9 @@ def convert(block):
 	except ValueError:
 		new = 0
 		if 'K' in block:
-			num = float(block[:-1])*1000			
+			new = float(block[:-1])*1000			
 		if 'M' in block:
-			num = float(block[:-1])*1000000
-		new = (num)
+			new = float(block[:-1])*1000000
 	return(new)
 
 def GetResults(list_of_candidates, result):
@@ -91,8 +90,8 @@ def ConvertTweets(name_of_file, method=doNothing):
 			flag = True
 			for tweet in collection_of_tweets[candidate]:
 
-				if tweet:
-					if (makeDay(tweet[0]) == i):
+				if len(tweet)>1:
+					if (makeDay(tweet[0][0]) == i):
 						sorted_list.append(tweet)
 						flag = False
 				else:
@@ -135,6 +134,7 @@ def ConvertTweets(name_of_file, method=doNothing):
 				dayArray = []
 
 				for day in listPerDay:
+					day = day[0]
 					if(convert(day[2]) > toplikes):
 						toplikes = convert(day[2])
 					if(convert(day[3]) > topretweets):
@@ -171,7 +171,7 @@ def ConvertTweets(name_of_file, method=doNothing):
 			else:	
 				#--------------------------------------CASE 3: ONE OR MORE TWEETS WERE POSTED------------------------------------#
 				#WHAT IS THE DAY?
-				date1 = tweet[0]
+				date1 = tweet[0][0]
 				year = int(date1.split(" ")[2])
 				month = ((date1.split(" ")[1]))
 				month = (abbr_to_num[month])
@@ -202,6 +202,7 @@ def ConvertTweets(name_of_file, method=doNothing):
 					dayArray = []
 					if(len(listPerDay)>0):
 						for day in listPerDay:
+							day = day[0]
 							if(convert(day[2]) > toplikes):
 								toplikes = convert(day[2])
 							if(convert(day[3]) > topretweets):
@@ -279,8 +280,8 @@ def Scoring(name_of_file, list_of_collection_of_tweets, final_result):
 
 	
 if __name__ == '__main__':
-	name_of_file = "DATA-TWEETS Tim Kaine Corey Stewart.txt"
-	final_result_file = "Comstock Wexton poll.txt"
+	name_of_file = "DATA-TWEETS Joe Donnelly Mike Braun.txt"
+	final_result_file = "DATA-POLL Joe Donnelly Mike Braun.txt"
 	final_result = 0
 	
 	with open(final_result_file, 'r') as file:

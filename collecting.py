@@ -21,9 +21,14 @@ import datetime
 from googlesearch import search
 import json
 
+import sentiment
+import scoring
 #So we don't see the window
 chrome_options = Options()
 chrome_options.add_argument("--headless")#RUNNNING HEADER
+chrome_options.add_argument("log-level=3")#GETTING RID OF ANNOYING ERRORS
+
+
 
 def getResponses(driver, user, id):
 	#Form url
@@ -45,7 +50,12 @@ def getResponses(driver, user, id):
 		if 'Like' in likes:
 			likes = likes.split(" ")[-1]
 			likes = likes.split('\n')[-1]
-		print(tweet_body, likes)
+		p = 0
+		if len(tweet_body) > 0:
+			p = sentiment.Sentiment(tweet_body)[2]
+			
+		print(tweet_body, scoring.convert(likes))
+		return(p * scoring.convert(likes))
 	sleep(1)
 	
 	pass
@@ -145,12 +155,17 @@ def Collect(user, start, end):
 					print('lost element reference', tweet)
 			
 			
-			#Getting Comments
+			#-------------------------Getting Comments----------------------------
 			i = 0
+			new_list = []
 			for date_list in date_list_temp:
 				id = id_list[i]
-				getResponses(driver,user,id)
+				num = getResponses(driver,user,id)
+				date_list.append(num)
+				new_list.append(date_list)
 				i+=1
+			
+			main_list.append(new_list)
 			
 		except NoSuchElementException:
 			pass
@@ -230,8 +245,8 @@ def Handle(name):
 if __name__ == "__main__":
 	import datetime
 	user = 'realdonaldtrump'
-	start = datetime.datetime(2018, 2, 10)  # year, month, day
-	end = datetime.datetime(2018, 12, 7)  # year, month, day
+	start = datetime.datetime(2018, 12, 7)  # year, month, day
+	end = datetime.datetime(2018, 12, 10)  # year, month, day
 	Collect(user,start,end)
 	
 

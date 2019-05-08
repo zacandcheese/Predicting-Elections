@@ -168,7 +168,7 @@ class scoringMatrixOverTime:
 			input_vector = np.array(input_vector, ndmin=2)
 			target_vector = np.array(target_vector, ndmin=2)
 
-			temp_sum += input_vector[0,4]#TEMP
+			temp_sum += input_vector[0,self.num_of_factors-1]#----------------------TEMP------------------
 			#input 
 			output_vector1 = np.dot(input_vector, self.weights_in_hidden)
 			output_vector_hidden = output_vector1
