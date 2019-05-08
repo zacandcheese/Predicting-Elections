@@ -27,7 +27,7 @@ def Sentiment(tweet):
 	neutral = score['probabilities']['neutral']
 	positive = score['probabilities']['positive']
 	
-	#print(negative, neutral, positive)
+	print(negative, neutral, positive)
 	return(negative, neutral, positive)
 	
 if __name__== '__main__':

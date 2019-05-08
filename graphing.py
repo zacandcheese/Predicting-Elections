@@ -52,6 +52,7 @@ def MakeGraphs(name_of_file):
 	for date in collection_of_tweets.keys():
 		stuff = collection_of_tweets[date]
 		for tweet in stuff:
+			tweet = tweet[0]
 			try:
 				year = int(tweet[0].split(" ")[2])
 				month = ((tweet[0].split(" ")[1]))

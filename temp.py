@@ -1,7 +1,13 @@
-import random
-for i in range(10):
-	print(int(random.random()*4)+1)
-	#1 - Cal Poly
-	#2 - Drexel
-	#3 - RPI
-	#4 - UVa
+import os
+import json
+election_search = "Joe Donnelly Mike Braun"
+
+if(os.path.isfile('DATA-TWEETS ' + election_search + '.txt')):
+	with open('DATA-TWEETS ' + election_search + '.txt','r') as fp:
+		collection_of_tweets = json.load(fp)
+		
+print(os.path.isfile('DATA-TWEETS ' + election_search + '.txt'))
+
+from pathlib import Path
+
+print(Path().absolute())
