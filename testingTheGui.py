@@ -17,6 +17,15 @@ from kivy.properties import StringProperty
 from kivy.core.window import Window
 from kivy.properties import ObjectProperty
 from kivy.config import Config
+from kivy.clock import Clock
+from functools import partial
+from kivy.uix.progressbar import ProgressBar
+from kivy.core.text import Label as CoreLabel
+from kivy.lang.builder import Builder
+from kivy.graphics import Color, Ellipse, Rectangle
+from kivy.properties import NumericProperty
+import MAIN
+import loading
 
 kv_str = """
 #:import MAIN MAIN
@@ -91,9 +100,8 @@ MyScreenManager:
     BoxLayout:
         pos_hint: {'x': 0.45, 'y': 0.5}
         ProgressBar:
-            value: 50
+            value: 100
             max: 100
-
 <MAINPAGE>:
     canvas.before:
         Rectangle:
@@ -114,7 +122,7 @@ MyScreenManager:
             size_hint_y: 0.15
             pos_hint: {'x': 0.125, 'y': 0.15}
             on_release:
-                MAIN.main(root.textConvert(self))
+                root.runMain(root.textConvert(self))
         Button:
             text: 'Back'
             color: 1, 1, 1, 1
@@ -158,7 +166,7 @@ MyScreenManager:
             size_hint_y: 0.15
             pos_hint: {'x': 0.125, 'y': 0.15}
             on_release:
-                (root.textConvert(self))
+                collecting.Collect(root.textConvert(self))
         Button:
             text: 'Back'
             color: 1, 1, 1, 1
@@ -202,7 +210,7 @@ MyScreenManager:
             size_hint_y: 0.15
             pos_hint: {'x': 0.125, 'y': 0.15}
             on_release:
-                (root.textConvert(self))
+                scoring.Scoring(root.textConvert(self))
         Button:
             text: 'Back'
             color: 1, 1, 1, 1
@@ -234,17 +242,23 @@ class BRANCH(Screen):
     pass
 
 class LOAD(Screen):
-    pass\
-
+    
 class MAINPAGE(Screen):
     def textConvert(self,btn):
         return(self.ids.txt1.text)
+    def runMain(self, text):
+        self.manager.current = 'load'
+        Clock.schedule_once(lambda dt: self.call(text), 0.5)
+    def call(self, text):
+        MAIN.main(text)
 
 class COLLECTIONPAGE(Screen):
-    pass
+    def textConvert(self,btn):
+        return(self.ids.txt1.text)
 
 class SCORINGPAGE(Screen):
-    pass
+    def textConvert(self,btn):
+        return(self.ids.txt1.text)
 
 class MAINApp(App):
     def build(self):
@@ -252,11 +266,9 @@ class MAINApp(App):
         self.icon = 'Icon.png'
         Window.bind(on_request_close = self.on_request_close)
         return Builder.load_string(kv_str)
-    
     def on_request_close(self, *args):
         self.textpopup(title='Exit', text='Are you sure?')
         return True
-
     def textpopup(self, title='', text=''):
         box = BoxLayout(orientation='vertical')
         box.add_widget(Label(text=text))
