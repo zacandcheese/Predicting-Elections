@@ -5,6 +5,9 @@ from kivy.lang.builder import Builder
 from kivy.graphics import Color, Ellipse, Rectangle
 from kivy.clock import Clock
 from kivy.properties import NumericProperty
+import sys
+import os
+
 
 class CircularProgressBar(ProgressBar):
     def __init__(self, **kwargs):
@@ -45,9 +48,6 @@ class Main(App):
     def animate(self, dt):
         if self.root.value < 80:
             self.root.set_value(self.root.value + 1)
-        else:
-            self.root.set_value(0)
-
     # Simple layout for easy example
     def build(self):
         container = Builder.load_string(
@@ -58,7 +58,7 @@ class Main(App):
     max: 80''')
 
         # Animate the progress bar
-        Clock.schedule_interval(self.animate, 0.1)
+        Clock.schedule_interval(self.animate, 0.01)
         return container
 
 

@@ -40,8 +40,6 @@ kv_str = """
 MyScreenManager:
     BRANCH:
         name: 'branch'
-    LOAD:
-        name: 'load'
     MAINPAGE:
         name: 'mainPage'
     COLLECTIONPAGE:
@@ -93,15 +91,14 @@ MyScreenManager:
             on_release:
                 root.manager.transition.direction = 'left'
                 root.manager.current = 'scorePage'
-<LOAD>:
-    size_hint: .5, .5
+<LoadingPopup>:
+    title: "Main Program Running"
+    size_hint: None, None
+    size: 600, 200
     auto_dismiss: False
-    title: 'Downloading'
-    BoxLayout:
-        pos_hint: {'x': 0.45, 'y': 0.5}
-        ProgressBar:
-            value: 100
-            max: 100
+    Label:
+        text: 'Do Not Close Window or Power Off Computer, Program is Running'
+        color: 1, 1, 1, 1
 <MAINPAGE>:
     canvas.before:
         Rectangle:
@@ -241,16 +238,27 @@ class MyScreenManager(ScreenManager):
 class BRANCH(Screen):
     pass
 
-class LOAD(Screen):
-    
+class LoadingPopup(Popup):
+    def __init__(self, obj, **kwargs):
+        super(LoadingPopup, self).__init__(**kwargs)
+
 class MAINPAGE(Screen):
     def textConvert(self,btn):
         return(self.ids.txt1.text)
-    def runMain(self, text):
-        self.manager.current = 'load'
-        Clock.schedule_once(lambda dt: self.call(text), 0.5)
+		
     def call(self, text):
-        MAIN.main(text)
+        print(MAIN.main(text))
+		
+    def __init__(self, **kwargs):
+        super(MAINPAGE, self).__init__(**kwargs)
+        self.popup = LoadingPopup(self)
+		
+    def open(self):
+        self.popup.open()
+		
+    def runMain(self, text):
+        self.open()
+        Clock.schedule_once(lambda dt: self.call(text), 0.5)
 
 class COLLECTIONPAGE(Screen):
     def textConvert(self,btn):
