@@ -22,6 +22,8 @@ from googlesearch import search
 import json
 
 import sentiment
+from textblob import TextBlob
+
 import scoring
 #So we don't see the window
 chrome_options = Options()
@@ -46,17 +48,24 @@ def getResponses(driver, user, id):
 	for comment in comments:
 		tweet_body = comment.find_element_by_css_selector("p.TweetTextSize").text
 		likes = comment.find_element_by_css_selector("div[class = 'ProfileTweet-action ProfileTweet-action--favorite js-toggleState'").text#like button
-		sleep(1)
+		
 		if 'Like' in likes:
 			likes = likes.split(" ")[-1]
 			likes = likes.split('\n')[-1]
 		p = 0
-		if len(tweet_body) > 0:
-			p = sentiment.Sentiment(tweet_body)[2]
-			
-		print(tweet_body, scoring.convert(likes))
+		print(tweet_body)
+		
+		if len(tweet_body) > 1:
+			try:
+				v1, v2, v3 = sentiment.Sentiment(tweet_body)
+				sleep(1)
+				p = v3-v1
+			except IndexError:
+				print("Index Error")
+				analysis = TextBlob(tweet_body)
+				p = analysis.sentiment.polarity
+		print(scoring.convert(likes))
 		return(p * scoring.convert(likes))
-	sleep(1)
 	
 	pass
 
