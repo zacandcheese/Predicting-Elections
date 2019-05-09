@@ -1,1 +1,1 @@
-CreateObject("Wscript.Shell").Run "RunMain.bat",0,True
+CreateObject("Wscript.Shell").run "RunMain.bat",0,True
