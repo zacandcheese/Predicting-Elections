@@ -27,6 +27,7 @@ import numpy
 import collecting
 import scoring
 import graphing
+
 """FOLDER IMPORTS"""
 
 
@@ -62,7 +63,6 @@ def main(election_search = None):
 	
 	"""twitter handles for candidates"""
 	#Collecting candidates Name
-	
 	list_of_candidates = []
 	list_of_names = election_search.split(" ")
 	for i in range(int(len(list_of_names)/2)):
