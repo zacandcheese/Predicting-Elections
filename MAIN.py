@@ -27,6 +27,7 @@ import numpy
 import collecting
 import scoring
 import graphing
+
 """FOLDER IMPORTS"""
 
 
@@ -34,18 +35,18 @@ import graphing
 def main(election_search = None):
 												#INTRO#
 	#------------------------------------------------------------------------------------------------#
-	#The convention is alphbetical#
+	#The convention is alphabetical#
 	if(election_search == None):
 		if(platform.system() == "Darwin"):#MAC
-			election_search = raw_input("What election: ")#The two last names of the canidates i.e. Comstock Wexton
+			election_search = raw_input("What election: ")#The two last names of the candidates i.e. Comstock Wexton
 	   
 		if(platform.system() == "Windows"):#WINDOWS
-			election_search = input("What election: ")#The two last names of the canidates i.e. Comstock Wexton
+			election_search = input("What election: ")#The two last names of the candidates i.e. Comstock Wexton
 	else:
 		pass
 	"""
 	collection_of_tweets follows this file format
-	candidate, date, tweet, likes, replies, sentitment
+	candidate, date, tweet, likes, replies, sentiment
 	"""
 	collection_of_tweets = {}
 	"""
@@ -62,7 +63,6 @@ def main(election_search = None):
 	
 	"""twitter handles for candidates"""
 	#Collecting candidates Name
-	
 	list_of_candidates = []
 	list_of_names = election_search.split(" ")
 	for i in range(int(len(list_of_names)/2)):

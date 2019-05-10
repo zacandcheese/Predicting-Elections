@@ -129,7 +129,7 @@ MyScreenManager:
             pos_hint: {'x': 0.525, 'y': 0.15}
             on_release:
                 root.manager.transition.direction = 'right'
-                root.manager.current = 'load'
+                root.manager.current = 'branch'
         TextInput:
             focus: True
             unfocus_on_touch: False
