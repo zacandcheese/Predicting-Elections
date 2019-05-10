@@ -64,6 +64,9 @@ def getResponses(driver, user, id):
 				print("Index Error")
 				analysis = TextBlob(tweet_body)
 				p = analysis.sentiment.polarity
+			except KeyError:
+				analysis = TextBlob(tweet_body)
+				p = analysis.sentiment.polarity
 		print(scoring.convert(likes))
 		return(p * scoring.convert(likes))
 	
