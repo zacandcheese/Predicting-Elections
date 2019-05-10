@@ -250,21 +250,28 @@ def ConvertTweets(name_of_file, method=doNothing):
 def loadMatrix(name_of_file):
 	with open(name_of_file, 'r') as file:
 		b = json.load(file)
-		"""
+		
 		for matrix in b:
 			print(numpy.array(matrix))
-		"""
+		
 		arr1 = numpy.array(b[0])
 		arr2 = numpy.array(b[1])
 		return arr1, arr2
 					
-def Scoring(name_of_file, list_of_collection_of_tweets, final_result):
-	n = 601
-	size = (len(list_of_collection_of_tweets[0][0]))#[][]
-	matrix = scoringMatrix.scoringMatrixOverTime(num_of_factors = size, num_of_weights = 2, learning_rate = 0.4, method = doNothing)#CONSTRUCTOR
+def Scoring(name_of_file, list_of_collection_of_tweets, final_result, n = 601):
+	
+	#size = (len(list_of_collection_of_tweets[0][0]))#[][] FOR THE OLD WAY
+	size = (len(list_of_collection_of_tweets[0]))#[][]
+	print("SIZE: ", size, list_of_collection_of_tweets[0])
+	matrix = scoringMatrix.scoringMatrixOverTime(num_of_factors = size, num_of_weights = 2, learning_rate = 0.01, method = doNothing)#CONSTRUCTOR
+	#-------------COMMMENT OUT IF NEED RESTART-----------
+	
+	arr1, arr2 = loadMatrix(name_of_file)
+	matrix.create_weight_matrice(arr1, arr2)
+	
 	for i in range(n):
 		#matrix.train(list_of_collection_of_tweets[i%2],final_result[i%2], 50)
-		if(matrix.train(list_of_collection_of_tweets[i%2],final_result[i%2])):
+		if(matrix.train(list_of_collection_of_tweets,final_result)): #CHANGED [0]OLD WAY ---------- TRAINING
 			break
 		if(i%100 == 0):
 			print(i)
@@ -275,41 +282,82 @@ def Scoring(name_of_file, list_of_collection_of_tweets, final_result):
 
 	print(matrix.getMatrix())
 	
-	print("First Run", matrix.run(list_of_collection_of_tweets[0]), "\nSecond Run", matrix.run(list_of_collection_of_tweets[1]))
-	return(matrix.run(list_of_collection_of_tweets[0]), matrix.run(list_of_collection_of_tweets[1]))
-
-	
-if __name__ == '__main__':
-	name_of_file = "DATA-TWEETS Joe Donnelly Mike Braun.txt"
-	final_result_file = "DATA-POLL Joe Donnelly Mike Braun.txt"
+	print("First Run", matrix.run(list_of_collection_of_tweets), "\n")
+	return(matrix.run(list_of_collection_of_tweets))
+def main_scoring(candidates):
+	name_of_file = "DATA-TWEETS "+ candidates + ".txt"
+	final_result_file = "DATA-POLL " + candidates + ".txt"
 	final_result = 0
 	
 	with open(final_result_file, 'r') as file:
 		dict = json.load(file)
 		final_result = dict['11/6']
+		print("FINAL", final_result)
+		name = final_result.split('+')[0]
 		final_result = (float(final_result.split('+')[1]))
-		result_list = []
-		final_result_a = 50-final_result/2
-		result_list.append(final_result_a)
-		final_result_b = 50+final_result/2
-		result_list.append(final_result_b)
 
-	dict = ConvertTweets(name_of_file,print)
+
+	dict = ConvertTweets(name_of_file)
 	with open(name_of_file + " compiled.txt", 'r') as fin:
 		b = json.load(fin)
 		listArr = []
-		
+		result_list = []
+		i = 0
 		for candidate in b.keys():
-			print(candidate)
+			print("CANDIDIATE",candidate)
 			sumarr = [];
-			
+			if(i == 0):
+				print("DATA___________", name, candidate, name.lower() in candidate.lower())
+				if name.lower() in candidate.lower():
+					final_result_a = 50+final_result/2
+					result_list.append(final_result_a)
+					final_result_b = 50-final_result/2
+					result_list.append(final_result_b)
+				else:
+					final_result_a = 50-final_result/2
+					result_list.append(final_result_a)
+					final_result_b = 50+final_result/2
+					result_list.append(final_result_b)
+				i += 1
+				
 			for entry in b[candidate]:
 				a = numpy.array(entry)
 				sumarr.append(a)
+			
 			listArr.append(sumarr)
+			
+		#print("ZIP: ", numpy.array(list(zip(listArr[0],listArr[1]))))
 		
-			#Scoring("Comstock Wexton Matrix.txt", listArr, result_list)
-		Scoring("Comstock Matrix.txt", listArr, result_list)
-		#print(sumarr)"""
+		ls = numpy.array(list(zip(listArr[0],listArr[1])))
+		array = []
+		array1 = []
+		array2 = []
+		for mat in ls:
+			array.append(numpy.append(mat[0], mat[1], 0))
+			array1.append(numpy.append(mat[0], numpy.zeros(5), 0))
+			array2.append(numpy.append(numpy.zeros(5), mat[1], 0))
+		#Scoring("Comstock Wexton Matrix.txt", listArr, result_list)
+		#Scoring("GREATEST_MATRIX_2.0.txt", array, result_list, 1001)
+		Scoring("GREATEST_MATRIX_2.0.txt", array,final_result_a, 201)
 		
+		print(final_result_a, result_list)
+		matrix = scoringMatrix.scoringMatrixOverTime(num_of_factors = 10, num_of_weights = 2, learning_rate = 0.01, method = doNothing)#CONSTRUCTOR
+		arr1, arr2 = loadMatrix("GREATEST_MATRIX_2.0.txt")
+		matrix.create_weight_matrice(arr1, arr2)
+		print("matrix1------", matrix.run(array2)[2])
+		x,y,z = matrix.run(array)
+		return(x, y, z)
+	
+if __name__ == '__main__':
+	#candidates = "Dean Heller Jacky Rosen"
+	#candidates = "Bill Nelson Rick Scott"
+	#candidates = "Claire McCaskill Josh Hawley"
+	candidates = "Joe Donnelly Mike Braun"
+	#candidates = "Martha McSally Krysten Sinema"
+	#candidates = "Donald Trump Hillary Clinton"
+	main_scoring(candidates)
+	#TESTING BOTH HALVES
 
+		
+		
+		

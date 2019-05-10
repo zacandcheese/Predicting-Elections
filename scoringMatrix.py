@@ -144,18 +144,24 @@ class scoringMatrixOverTime:
 			self.learning_rate = learning_rate
 			self.method = method
 			
-			self.create_weight_matrice()
+			#self.create_weight_matrice()#CHANGED
 		else:
 			self.weights_in_hidden = in_matrix
 			self.weights_hidden_out = out_matrix
 			
-	def create_weight_matrice(self):
-		self.weights_in_hidden = np.random.rand(self.num_of_factors, self.num_of_weights)
+	def create_weight_matrice(self, weight_in = None, weight_out = None):
+		self.weights_in_hidden = weight_in
+		if (weight_in) is None:
+			print("NONE")
+			self.weights_in_hidden = np.random.rand(self.num_of_factors, self.num_of_weights)
+		
 		#for i in range(len(self.weights_in_hidden)):
 		#	if (i%2 == 0):
 		#		self.weights_in_hidden[i] *= -1
-		self.weights_hidden_out = np.random.rand(self.num_of_weights, 1)
-	
+		self.weights_hidden_out = weight_out #__________________THIS IS THE CAUSE OF MY PAIN____a frickin s
+		if (weight_out) is None:
+			self.weights_hidden_out = np.random.rand(self.num_of_weights, 1)
+		
 	def train(self, input_set, target_vector, start_value = 0):#Changed input
 		# input_vector and target_vector can be tuple, list or ndarray
 		output_vector2 = np.zeros(shape = (1,1))
@@ -164,10 +170,11 @@ class scoringMatrixOverTime:
 		temp_sum = 0#TEMP
 							#RUN THROUGH AND FIGURE OUT ERROR IF WE JUST INTIALLY RAN IT#
 		#------------------------------------------------------------------------------------------------------#								
+		
+		target_vector = np.array(target_vector, ndmin=2)
 		for input_vector in input_set:
+			
 			input_vector = np.array(input_vector, ndmin=2)
-			target_vector = np.array(target_vector, ndmin=2)
-
 			temp_sum += input_vector[0,self.num_of_factors-1]#----------------------TEMP------------------
 			#input 
 			output_vector1 = np.dot(input_vector, self.weights_in_hidden)
@@ -179,11 +186,11 @@ class scoringMatrixOverTime:
 		#ERROR
 		
 		self.method("SUM", temp_sum)#TEMP
+		
 		output_errors = target_vector - output_vector2   
-		self.method("Output Vector: " + str(output_vector2))#Toggle print
 		#time.sleep(1)
 		error = output_errors[0,0]
-
+		self.method("Output Error: " + str(output_vector2))#Toggle print
 		
 		
 														#PART 1#
@@ -205,9 +212,11 @@ class scoringMatrixOverTime:
 		i = 0
 		for err in hidden_errors[0]:
 
-			coefficient_of_error = 1+(	((sigmoid(err) * (1-(sigmoid(err))))	- 1/4) * self.learning_rate) #Second Derivative
+			coefficient_of_error = 1.00+(	((sigmoid(err) * (1-(sigmoid(err))))	- 1/4) * self.learning_rate) #Second Derivative #ERROR!!!!
+			coefficient_of_error = round(coefficient_of_error, 3)
+			#print(err, coefficient_of_error)
 			
-			self.method("HIDDEN ERROR "+ str(i) +":"+ str(err)+str(coefficient_of_error))
+			self.method("HIDDEN ERROR "+ str(i) +":"+ str(err)+" "+str(coefficient_of_error)+" "+str(sigmoid(err)))
 			identity_matrix[i][i] = coefficient_of_error
 			i+=1
 		

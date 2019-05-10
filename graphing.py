@@ -52,8 +52,9 @@ def MakeGraphs(name_of_file):
 	for date in collection_of_tweets.keys():
 		stuff = collection_of_tweets[date]
 		for tweet in stuff:
-			tweet = tweet[0]
 			try:
+				tweet = tweet[0]
+			
 				year = int(tweet[0].split(" ")[2])
 				month = ((tweet[0].split(" ")[1]))
 				month = (abbr_to_num[month])
@@ -78,10 +79,18 @@ def MakeGraphs(name_of_file):
 	plt.legend()
 	plt.gcf().autofmt_xdate()
 	plt.show()
-	
+def meth(start, stop, step):
+	l = []
+	i = start
+	while i <= stop:
+		l.append(i)
+		i += step
+	return l
 def Graph(xdata, ydata, xname, title):
-	plt.plot(range(len(xdata)),xdata , color='blue')
-	plt.plot(range(len(ydata)), (ydata), color='red')
+	l = meth(0, 50, 50/(len(xdata)-1))
+	print(l)
+	plt.plot( xdata, l , color='blue')
+	plt.plot(xdata, (ydata), color='red')
 	plt.ylabel("Percent Favorability")
 	plt.xlabel(xname)
 	plt.title(title)
@@ -132,5 +141,6 @@ def GraphCompiled(xArr1, yArr1, xArr2, yArr2):
 	plt.show()
 	
 if __name__=="__main__":
-	MakeGraphs("DATA-TWEETS David Brat Abigail Spanberger.txt")
+	Graph([12,13,14],[1,2,3],"a","b")
+	MakeGraphs("DATA-TWEETS Donald Trump Hillary Clinton.txt")
 	#GraphPolls("Comstock Wexton poll.txt")

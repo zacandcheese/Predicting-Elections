@@ -1,1 +1,1 @@
-CreateObject("Wscript.Shell").Run "RunMain.bat",0,True
+CreateObject("Wscript.Shell").Run "C:\Users\zacan\Desktop\Predicting-Elections\RunMain.bat",0,True

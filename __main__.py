@@ -117,6 +117,7 @@ def main(election_search = None):
 
 											#Scoring Everything#
 	#-----------------------------------------------------------------------------------------------#
+	"""
 	compDict = scoring.ConvertTweets('DATA-TWEETS ' + election_search + '.txt')
 	
 	print(collection_of_polls['11/6'])
@@ -132,11 +133,13 @@ def main(election_search = None):
 	
 	final_resultsA, final_resultsB = scoring.Scoring("BLANK_FILE.txt", listArr, results)
 	print("RESULTS: " , final_resultsA[2])
-	
+	"""
+	result, final_resultsX, final_resultsY = scoring.main_scoring(election_search)
+	print("RESULTS: ", result)
 												#Graphing#
 	#------------------------------------------------------------------------------------------------#
 	graphing.MakeGraphs('DATA-TWEETS ' + election_search + '.txt')
-	graphing.Graph(final_resultsA[2],final_resultsB[2],"time", "Comparing")
+	graphing.Graph(final_resultsX,final_resultsY,"time", "Comparing")
 	
 if __name__ == '__main__':
 	main()

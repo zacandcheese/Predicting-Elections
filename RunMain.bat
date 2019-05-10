@@ -1,3 +1,3 @@
 @echo off
-"python.exe" "MAIN.py"
+"python.exe" "%~dp0MAIN.py"
 pause
