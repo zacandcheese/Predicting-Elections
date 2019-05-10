@@ -245,12 +245,8 @@ def Handle(name):
 	from selenium.webdriver.common.by import By
 	from googlesearch import search
 	import json
-<<<<<<< HEAD
-	if name == 'Donald Trump':
-=======
 	if(name == 'Donald Trump'):
 		print('realdonaldtrump')
->>>>>>> c8d34757096197202c269cbe3bb0c7c6f90a0e7b
 		return 'realdonaldtrump'
 	url = []
 	for url2 in search("Twitter " + name, stop=1):
