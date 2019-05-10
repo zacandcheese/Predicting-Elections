@@ -338,24 +338,23 @@ def main_scoring(candidates):
 			array2.append(numpy.append(numpy.zeros(5), mat[1], 0))
 		#Scoring("Comstock Wexton Matrix.txt", listArr, result_list)
 		#Scoring("GREATEST_MATRIX_2.0.txt", array, result_list, 1001)
-		Scoring("GREATEST_MATRIX_2.0.txt", array,final_result_a, 201)
+		Scoring("GREATEST_MATRIX_2.0.txt", array,final_result_a, 2001)
 		
 		print(final_result_a, result_list)
 		matrix = scoringMatrix.scoringMatrixOverTime(num_of_factors = 10, num_of_weights = 2, learning_rate = 0.01, method = doNothing)#CONSTRUCTOR
 		arr1, arr2 = loadMatrix("GREATEST_MATRIX_2.0.txt")
 		matrix.create_weight_matrice(arr1, arr2)
-		print("matrix1------", matrix.run(array2)[2])
-		x,y,z = matrix.run(array)
-		return(x, y, z)
+		print("matrix1------", matrix.run(array1)[2])
+		return(matrix.run(array))
 	
 if __name__ == '__main__':
 	#candidates = "Dean Heller Jacky Rosen"
 	#candidates = "Bill Nelson Rick Scott"
 	#candidates = "Claire McCaskill Josh Hawley"
-	candidates = "Joe Donnelly Mike Braun"
+	#candidates = "Joe Donnelly Mike Braun"
 	#candidates = "Martha McSally Krysten Sinema"
-	#candidates = "Donald Trump Hillary Clinton"
-	main_scoring(candidates)
+	candidates = "Donald Trump Hillary Clinton"
+	print(main_scoring(candidates))
 	#TESTING BOTH HALVES
 
 		

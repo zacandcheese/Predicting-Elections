@@ -136,10 +136,11 @@ def main(election_search = None):
 	"""
 	result, final_resultsX, final_resultsY = scoring.main_scoring(election_search)
 	print("RESULTS: ", result)
+	print("Y", final_resultsY)
 												#Graphing#
 	#------------------------------------------------------------------------------------------------#
 	graphing.MakeGraphs('DATA-TWEETS ' + election_search + '.txt')
-	graphing.Graph(final_resultsX,final_resultsY,"time", "Comparing")
+	graphing.Graph(final_resultsX, final_resultsY,"time", "Comparing")
 	
 if __name__ == '__main__':
 	main()
