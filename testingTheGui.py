@@ -26,6 +26,8 @@ from kivy.graphics import Color, Ellipse, Rectangle
 from kivy.properties import NumericProperty
 import MAIN
 import loading
+import scoring
+import collecting
 
 kv_str = """
 #:import MAIN MAIN
@@ -141,7 +143,7 @@ MyScreenManager:
             multiline: True
             font_size: 35
             on_text_validate:
-                MAIN.main(root.textConvert(self))
+                root.runMain(root.textConvert(self))
 
 <COLLECTIONPAGE>:
     canvas.before:
@@ -163,7 +165,7 @@ MyScreenManager:
             size_hint_y: 0.15
             pos_hint: {'x': 0.125, 'y': 0.15}
             on_release:
-                collecting.Collect(root.textConvert(self))
+                root.runMain(root.textConvert(self))
         Button:
             text: 'Back'
             color: 1, 1, 1, 1
@@ -185,7 +187,7 @@ MyScreenManager:
             multiline: True
             font_size: 35
             on_text_validate:
-                collecting.Collect(root.textConvert(self))
+                root.runMain(root.textConvert(self))
 
 <SCORINGPAGE>:
     canvas.before:
@@ -207,7 +209,7 @@ MyScreenManager:
             size_hint_y: 0.15
             pos_hint: {'x': 0.125, 'y': 0.15}
             on_release:
-                scoring.Scoring(root.textConvert(self))
+                root.runMain(root.textConvert(self))
         Button:
             text: 'Back'
             color: 1, 1, 1, 1
@@ -229,7 +231,7 @@ MyScreenManager:
             multiline: True
             font_size: 35
             on_text_validate:
-                scoring.main_scoring(root.textConvert(self))
+                root.runMain(root.textConvert(self))
 """
 
 class MyScreenManager(ScreenManager):
@@ -247,7 +249,8 @@ class MAINPAGE(Screen):
         return(self.ids.txt1.text)
 		
     def call(self, text):
-        print(MAIN.main(text))
+        MAIN.main(text)
+        self.close()
 		
     def __init__(self, **kwargs):
         super(MAINPAGE, self).__init__(**kwargs)
@@ -256,6 +259,9 @@ class MAINPAGE(Screen):
     def open(self):
         self.popup.open()
 		
+    def close(self):
+        self.popup.dismiss()
+
     def runMain(self, text):
         self.open()
         Clock.schedule_once(lambda dt: self.call(text), 0.5)
@@ -263,10 +269,48 @@ class MAINPAGE(Screen):
 class COLLECTIONPAGE(Screen):
     def textConvert(self,btn):
         return(self.ids.txt1.text)
+		 
+    def call(self, text):
+        MAIN.main(text)
+        self.close()
+		
+    def __init__(self, **kwargs):
+        super(COLLECTIONPAGE, self).__init__(**kwargs)
+        self.popup = LoadingPopup(self)
+		
+    def open(self):
+        self.popup.open()
+		
+    def close(self):
+        self.popup.dismiss()
+
+    def runMain(self, text):
+        self.open()
+        Clock.schedule_once(lambda dt: self.call(text), 0.5)
+
 
 class SCORINGPAGE(Screen):
     def textConvert(self,btn):
         return(self.ids.txt1.text)
+		
+    def call(self, text):
+        scoring.main_scoring(text)
+        self.close()
+		
+    def __init__(self, **kwargs):
+        super(SCORINGPAGE, self).__init__(**kwargs)
+        self.popup = LoadingPopup(self)
+		
+    def open(self):
+        self.popup.open()
+		
+    def close(self):
+        self.popup.dismiss()
+
+    def runMain(self, text):
+        self.open()
+        Clock.schedule_once(lambda dt: self.call(text), 0.5)
+
 
 class MAINApp(App):
     def build(self):

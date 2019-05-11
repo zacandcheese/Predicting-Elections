@@ -144,7 +144,7 @@ class scoringMatrixOverTime:
 			self.learning_rate = learning_rate
 			self.method = method
 			
-			#self.create_weight_matrice()#CHANGED
+			self.create_weight_matrice()#CHANGED
 		else:
 			self.weights_in_hidden = in_matrix
 			self.weights_hidden_out = out_matrix
@@ -160,6 +160,7 @@ class scoringMatrixOverTime:
 		#		self.weights_in_hidden[i] *= -1
 		self.weights_hidden_out = weight_out #__________________THIS IS THE CAUSE OF MY PAIN____a frickin s
 		if (weight_out) is None:
+			print("NONE")
 			self.weights_hidden_out = np.random.rand(self.num_of_weights, 1)
 		
 	def train(self, input_set, target_vector, start_value = 0):#Changed input
