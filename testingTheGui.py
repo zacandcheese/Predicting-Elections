@@ -229,7 +229,7 @@ MyScreenManager:
             multiline: True
             font_size: 35
             on_text_validate:
-                scoring.Scoring(root.textConvert(self))
+                scoring.main_scoring(root.textConvert(self))
 """
 
 class MyScreenManager(ScreenManager):
