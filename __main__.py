@@ -140,7 +140,7 @@ def main(election_search = None):
 												#Graphing#
 	#------------------------------------------------------------------------------------------------#
 	graphing.MakeGraphs('DATA-TWEETS ' + election_search + '.txt')
-	graphing.Graph(final_resultsX, final_resultsY,"time", "Comparing")
+	graphing.Graph(final_resultsX, final_resultsY,"Days", "Candidates Favorability Over Time")
 	
 if __name__ == '__main__':
 	main()

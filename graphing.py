@@ -89,8 +89,8 @@ def meth(start, stop, step):
 def Graph(xdata, ydata, xname, title):
 	l = meth(0, 50, 50/(len(xdata)-1))
 	print(l)
-	plt.plot( xdata, l , color='blue')
-	plt.plot(xdata, (ydata), color='red')
+	plt.plot( xdata, l , color='black')
+	plt.plot(xdata, (ydata), color='Blue', label = "Donnelly's Favorability with Respect to Braun")
 	plt.ylabel("Percent Favorability")
 	plt.xlabel(xname)
 	plt.title(title)
@@ -108,10 +108,22 @@ def GraphPolls(name_of_file):
 	
 	x_axis_B = []
 	y_axis_B = []
+	
+	x_axis_C = []
+	y_axis_C = []
 	#Make Dates
+	
+	#Candidate A is positive
+	candidates = (name_of_file.split(" "))
+	candidateA = name_of_file.split(" ")[2]
+	candidateB = name_of_file.split(" ")[-1].split(".")[0]
+	
+	
 	for date in collection_of_polls.keys():
 		stuff = collection_of_polls[date]
 		value = (float(stuff.split("+")[1]))
+		name = stuff.split("+")[0]
+		
 		print(date.split("/")[0])#month
 		
 		year = 2019
@@ -119,14 +131,23 @@ def GraphPolls(name_of_file):
 		day = int(date.split("/")[1])
 		new_date = datetime.date(year, month, day)
 		
-		x_axis_A.append(new_date)
-		y_axis_A.append(50-value)
-		y_axis_B.append(50+value)
+		if candidateA in name:
+			value = value/2
+			x_axis_A.append(new_date)
+			y_axis_A.append(50+value)
+		else:
+			value = -1*value/2
+			x_axis_B.append(new_date)
+			y_axis_B.append(50+value)
+		
+		x_axis_C.append(new_date)
+		y_axis_C.append(50)
 		
 	plt.ylabel('Percentage of People')
 	plt.title('Poll Prediction of the Election')
-	plt.plot_date(x_axis_A, y_axis_A, 'ro', xdate = True, label = "Comstock")
-	plt.plot_date(x_axis_A,y_axis_B, 'bo', xdate = True, label = "Wexton")
+	plt.plot_date(x_axis_A, y_axis_A, 'bo', xdate = True, label = candidateA)
+	plt.plot_date(x_axis_B, y_axis_B, 'ro', xdate = True, label = candidateB)
+	plt.plot_date(x_axis_C,y_axis_C, 'k-', xdate = True)
 	plt.legend()
 	plt.gcf().autofmt_xdate()
 	plt.show()
@@ -141,6 +162,6 @@ def GraphCompiled(xArr1, yArr1, xArr2, yArr2):
 	plt.show()
 	
 if __name__=="__main__":
-	Graph([12,13,14],[1,2,3],"a","b")
-	MakeGraphs("DATA-TWEETS Donald Trump Hillary Clinton.txt")
-	#GraphPolls("Comstock Wexton poll.txt")
+	#Graph([12,13,14],[1,2,3],"a","b")
+	MakeGraphs("DATA-TWEETS Joe Donnelly Mike Braun.txt")
+	GraphPolls("DATA-POLL Joe Donnelly Mike Braun.txt")

@@ -33,9 +33,9 @@ import graphing
 
 """MAIN"""
 def main(election_search = None):
-												#INTRO#
+													#INTRO#
 	#------------------------------------------------------------------------------------------------#
-	#The convention is alphabetical#
+	#The convention is alphbetical#
 	if(election_search == None):
 		if(platform.system() == "Darwin"):#MAC
 			election_search = raw_input("What election: ")#The two last names of the candidates i.e. Comstock Wexton
@@ -46,7 +46,7 @@ def main(election_search = None):
 		pass
 	"""
 	collection_of_tweets follows this file format
-	candidate, date, tweet, likes, replies, sentiment
+	candidate, date, tweet, likes, replies, sentitment
 	"""
 	collection_of_tweets = {}
 	"""
@@ -117,6 +117,7 @@ def main(election_search = None):
 
 											#Scoring Everything#
 	#-----------------------------------------------------------------------------------------------#
+	"""
 	compDict = scoring.ConvertTweets('DATA-TWEETS ' + election_search + '.txt')
 	
 	print(collection_of_polls['11/6'])
@@ -132,11 +133,15 @@ def main(election_search = None):
 	
 	final_resultsA, final_resultsB = scoring.Scoring("BLANK_FILE.txt", listArr, results)
 	print("RESULTS: " , final_resultsA[2])
-	
+	"""
+	result, final_resultsX, final_resultsY = scoring.main_scoring(election_search)
+	print("RESULTS: ", result)
+	print("Y", final_resultsY)
 												#Graphing#
 	#------------------------------------------------------------------------------------------------#
 	graphing.MakeGraphs('DATA-TWEETS ' + election_search + '.txt')
-	graphing.Graph(final_resultsA[2],final_resultsB[2],"time", "Comparing")
+	graphing.Graph(final_resultsX, final_resultsY,"time", "Comparing")
+
 	
 if __name__ == '__main__':
 	import testingTheGui

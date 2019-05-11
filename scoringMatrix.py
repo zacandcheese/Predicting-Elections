@@ -144,7 +144,7 @@ class scoringMatrixOverTime:
 			self.learning_rate = learning_rate
 			self.method = method
 			
-			#self.create_weight_matrice()#CHANGED
+			self.create_weight_matrice()#CHANGED
 		else:
 			self.weights_in_hidden = in_matrix
 			self.weights_hidden_out = out_matrix
