@@ -265,10 +265,10 @@ def Scoring(name_of_file, list_of_collection_of_tweets, final_result, n = 601):
 	print("SIZE: ", size, list_of_collection_of_tweets[0])
 	matrix = scoringMatrix.scoringMatrixOverTime(num_of_factors = size, num_of_weights = 2, learning_rate = 0.01, method = doNothing)#CONSTRUCTOR
 	#-------------COMMMENT OUT IF NEED RESTART-----------
-	
+	"""
 	arr1, arr2 = loadMatrix(name_of_file)
 	matrix.create_weight_matrice(arr1, arr2)
-	
+	"""
 	for i in range(n):
 		#matrix.train(list_of_collection_of_tweets[i%2],final_result[i%2], 50)
 		if(matrix.train(list_of_collection_of_tweets,final_result)): #CHANGED [0]OLD WAY ---------- TRAINING
@@ -292,7 +292,7 @@ def main_scoring(candidates):
 	with open(final_result_file, 'r') as file:
 		dict = json.load(file)
 		final_result = dict['11/6']
-		print("FINAL", final_result)
+		print("FINAL--------", final_result)
 		name = final_result.split('+')[0]
 		final_result = (float(final_result.split('+')[1]))
 
@@ -338,23 +338,39 @@ def main_scoring(candidates):
 			array2.append(numpy.append(numpy.zeros(5), mat[1], 0))
 		#Scoring("Comstock Wexton Matrix.txt", listArr, result_list)
 		#Scoring("GREATEST_MATRIX_2.0.txt", array, result_list, 1001)
-		Scoring("GREATEST_MATRIX_2.0.txt", array,final_result_a, 2001)
+		Scoring("GREATEST_MATRIX_2.0.txt", array,final_result_a, 2001)#CHANGED NUM
 		
-		print(final_result_a, result_list)
+		print(candidates, final_result_a, result_list)
 		matrix = scoringMatrix.scoringMatrixOverTime(num_of_factors = 10, num_of_weights = 2, learning_rate = 0.01, method = doNothing)#CONSTRUCTOR
 		arr1, arr2 = loadMatrix("GREATEST_MATRIX_2.0.txt")
 		matrix.create_weight_matrice(arr1, arr2)
 		print("matrix1------", matrix.run(array1)[2])
-		return(matrix.run(array))
+		
+		z, x, y = matrix.run(array)
+		
+		import graphing
+		graphing.MakeGraphs('DATA-TWEETS ' + candidates + '.txt')
+		graphing.Graph(x, y,"Days", "Donnelly's Favorability Over Time")
+		
+		return(x, y, z)
+		
 	
 if __name__ == '__main__':
+	#group = []
 	#candidates = "Dean Heller Jacky Rosen"
+	#group.append(candidates)
 	#candidates = "Bill Nelson Rick Scott"
+	#group.append(candidates)
 	#candidates = "Claire McCaskill Josh Hawley"
-	#candidates = "Joe Donnelly Mike Braun"
+	#group.append(candidates)
+	candidates = "Joe Donnelly Mike Braun"
+	#group.append(candidates)
 	#candidates = "Martha McSally Krysten Sinema"
-	candidates = "Donald Trump Hillary Clinton"
-	print(main_scoring(candidates))
+	#group.append(candidates)
+	#candidates = "Donald Trump Hillary Clinton"
+	main_scoring(candidates)
+	#for candidates in group:
+	#	print(main_scoring(candidates))
 	#TESTING BOTH HALVES
 
 		

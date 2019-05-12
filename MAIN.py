@@ -33,7 +33,7 @@ import graphing
 
 """MAIN"""
 def main(election_search = None):
-												#INTRO#
+													#INTRO#
 	#------------------------------------------------------------------------------------------------#
 	#The convention is alphbetical#
 	if(election_search == None):
@@ -141,6 +141,7 @@ def main(election_search = None):
 	#------------------------------------------------------------------------------------------------#
 	graphing.MakeGraphs('DATA-TWEETS ' + election_search + '.txt')
 	graphing.Graph(final_resultsX, final_resultsY,"time", "Comparing")
+
 	
 if __name__ == '__main__':
 	import testingTheGui
